@@ -1,0 +1,68 @@
+<trans>
+$kip.jb.string_of_nodes_checker = '';
+$kip.jb.dictionary_trigger = 0;
+finalvar = Null();
+i = 1;
+If(!IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space), 
+	If(Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 1 & FindByPos(1 , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'mark_ID',
+		WriteToOperationLog('ONE ITEM IN CUSTOM'),
+		While($kip.jb.dictionary_trigger != 1 & i <= Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),
+			If(!IsNull(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.)),
+				If(Left(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name), 3) != 'BX_',
+					If(Exist(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),$kip.bendex.array_DET),
+						$kip.jb.string_of_nodes_checker += CreateNode('',FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.));
+						$kip.jb.dictionary_trigger = 1;
+					);
+					If(Exist(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),$kip.bendex.array_CNF),
+						$kip.jb.string_of_nodes_checker += CreateNode('',FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.));
+						$kip.jb.dictionary_trigger = 1;
+					)
+				);	
+			);
+			i++;
+		);
+	);
+	
+	If(Length($kip.jb.string_of_nodes_checker) > 0,
+		If(Exist('BENDEX_POSITION',ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),
+			finalvar = '\n' + CreateNode('','BENDEX_POSITION',ServiceResponse$Order$OrderItems$OrderItem.PositionString$) + '\n';
+		)
+	),
+	While($kip.jb.dictionary_trigger != 1 & i <= Count(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),
+		If(!IsNull(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.)),
+			If(Left(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name), 3) != 'BX_',
+				If(Exist(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),$kip.bendex.array_DET),
+					$kip.jb.string_of_nodes_checker += CreateNode('',FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.));
+					$kip.jb.dictionary_trigger = 1;
+				);
+				If(Exist(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),$kip.bendex.array_CNF),
+					$kip.jb.string_of_nodes_checker += CreateNode('',FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.));
+					$kip.jb.dictionary_trigger = 1;
+				);
+			);	
+		);
+		i++;
+	);
+    
+	If(Length($kip.jb.string_of_nodes_checker) > 0,
+		If(Exist('BENDEX_POSITION',ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),
+			finalvar = '\n' + CreateNode('','BENDEX_POSITION',ServiceResponse$Order$OrderItems$OrderItem.PositionString$) + '\n';
+		)
+	)
+);
+
+
+checkerShip = 0;
+If(Length($kip.jb.string_of_nodes_checker) == 0,
+	If(ServiceResponse$Order$OrderItems$OrderItem.ShoppingItemType$ == 'Shipping',
+		finalvar = Null();
+		checkerShip = 1;
+	);
+	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile' | ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'box' | ServiceResponse$Order$OrderItems$OrderItem.Name$ == 'Adapter Profile',
+		If(checkerShip == 0,
+			finalvar = '\n' + CreateNode('','BENDEX_POSITION',ServiceResponse$Order$OrderItems$OrderItem.PositionString$) + '\n';
+		)
+	)
+);
+finalvar
+</trans>

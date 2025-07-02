@@ -1,0 +1,35 @@
+<trans>
+
+//Check result in respons, if message not 'Success' send email with result and details and stop operations, also if zero orders stop operations
+$kip.bendex.did = ServiceResponse$Order$Did$;
+$kip.bendex.customer_number = ServiceResponse$Order$BACompany3$;
+$kip.bendex.business_unit = ServiceResponse$Order$BACompany2$;
+$kip.bendex.description = ServiceResponse$Order$Description$;
+$kip.bendex.description = Replace($kip.bendex.description,'/','');
+$kip.bendex.description = Replace($kip.bendex.description,'\\','');
+$kip.bendex.description = Replace($kip.bendex.description,'~','');
+$kip.bendex.description = Replace($kip.bendex.description,'%','');
+$kip.bendex.description = Replace($kip.bendex.description,'*','');
+$kip.bendex.description = Replace($kip.bendex.description,':','');
+//$kip.bendex.description = Replace($kip.bendex.description,' ','');
+$kip.bendex.description = Replace($kip.bendex.description,'
+','');
+$kip.bendex.baCompany = ServiceResponse$Order$BACompany$;
+$kip.bendex.createdBy = ServiceResponse$Order$CreatedBy$;
+$kip.bendex.creation_date = FormatDate(ServiceResponse$Order$CreatedOn$,'yyyy-mm-dd');
+$kip.bendex.response_result = ServiceResponse$Result$;
+$kip.bendex.response_details = ServiceResponse$Details$;
+$kip.bendex.version = ServiceResponse$Version$;
+$kip.jb.positionStringFlag = 'THEREISNOPOS888';
+$kip.bendex.fast_track = 'N';
+If($kip.bendex.response_result == 'Success',
+    If(Length(GetXmlString([ServiceResponse$Order$])) > 30,
+        $kip.jb.operation_log += 'INFO: Received order from Bendex with OID - '+ServiceResponse$Order$Oid$+' and DID - '+ServiceResponse$Order$Did$+'.\r\n',
+        $kip.jb.operation_log += 'INFO: Received 0 orders from Bendex call, further actions stopped.\r\n';
+        CancelOperationChain('INFO: Received 0 orders from Bendex call, further actions stopped.');
+    ),
+    $kip.jb.operation_log +=     'ERROR: Received '+$kip.bendex.response_result+' from Bendex response, with details - '+$kip.bendex.response_details+', further actions stopped.\r\n';
+  //  SendEmailMessage("m.d0d1a084-1c40-42fb-ba65-6cda3fc7e5f4");
+    CancelOperationChain('ERROR: Received '+$kip.bendex.response_result+' from Bendex response, with details - '+$kip.bendex.response_details+', further actions stopped.\r\n');
+);
+</trans>

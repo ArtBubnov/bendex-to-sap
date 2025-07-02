@@ -1,0 +1,136 @@
+<trans>
+$codes_checker = 0;
+$kip.jb.string_of_nodes_checker = '';
+$kip.jb.dictionary_trigger = 0;
+
+i = 1;
+If(!IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space), 
+	If(Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 1 & FindByPos(1 , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'mark_ID',
+		WriteToOperationLog('ONE ITEM IN CUSTOM'),
+		
+		
+		While($kip.jb.dictionary_trigger != 1 & i <= Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),
+		
+        
+        If(!IsNull(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.)),
+			If(Left(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name), 3) != 'BX_',
+				If(Exist(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),$kip.bendex.array_DET),
+					$kip.jb.string_of_nodes_checker += CreateNode('',FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.));
+					$kip.jb.dictionary_trigger = 1;
+				);
+
+
+				If(Exist(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),$kip.bendex.array_CNF),
+					$kip.jb.string_of_nodes_checker += CreateNode('',FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.));
+					$kip.jb.dictionary_trigger = 1;
+				)
+
+
+			);	
+		);
+		i++;
+		);
+	);
+	
+	If(Length($kip.jb.string_of_nodes_checker) == 0,
+		If(CountSubString(ServiceResponse$Order$OrderItems$OrderItem.ShoppingItemType$,'Shipping') > 0,
+			RegExReplace(ServiceResponse$Order$OrderItems$OrderItem.Description$,'&#xD;', ''),
+			FindValue('SAPCODE',ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.)
+		),
+		FindValue('SAPCODE',ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.)
+
+	)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------New logic part V2-----------------------------------------------------------
+//check if <CustomProperties> or <TemplateParameters> visible
+If(	Count(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name) > 1 || 	Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.) > 1,
+		WriteToOperationLog('True Case__01');
+		$kip.bendex.distribution_list_value = FindValue("DISTRIBUTION LIST",
+			ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name,
+			ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.);
+			If(IsNull($kip.bendex.distribution_list_value),
+				$kip.bendex.distribution_list_value = FindValue("DISTRIBUTION LIST",
+					ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name,
+					ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.);
+			);
+		If($kip.bendex.distribution_list_value == 'Facades',
+			$nodeValue = 'FacadesTrue';
+		);
+		If($kip.bendex.distribution_list_value != 'Facades',
+			$sapcode = FindValue("SAPCODE",
+				ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name,
+				ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.);
+			$nodeValue = FindValue("SAPCODE",
+				ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name,
+				ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.);
+			If(IsNull($nodeValue),
+				$sapcode = FindValue("SAPCODE",
+					ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name,
+					ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.);
+				$nodeValue = FindValue("SAPCODE",
+					ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name,
+					ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.);
+			);
+		);
+,
+		$kip.bendex.decision.tppv_exist = false;
+		
+		$kip.bendex.if_item_is_shipping = ServiceResponse$Order$OrderItems$OrderItem.ShoppingItemType$;
+		If($kip.bendex.if_item_is_shipping == 'Shipping',
+			$nodeValue = 'FREIGHT',
+			$kip.bendex.name = ServiceResponse$Order$OrderItems$OrderItem.Name$;
+
+				If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile',
+					If(ServiceResponse$Order$OrderItems$OrderItem.Profile$length == 150,
+						$kip.jb.BS_checker = 1;
+						width = RoundToInt(ServiceResponse$Order$OrderItems$OrderItem.Profile$flangeSum);
+						If(width > 1500,
+							$nodeValue = 'BS1500',
+							$nodeValue = $kip.jitterbit.generate_prj_SapCodes_dict[width];
+						);
+						
+						$codes_checker = 1;
+					);
+				);
+				
+				
+			
+			bends = ServiceResponse$Order$OrderItems$OrderItem.Profile$bendingCount - Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Flanges$Flange#.hemRi);
+			If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile' & $codes_checker == 0 & bends < 10,
+				If(ServiceResponse$Order$OrderItems$OrderItem.Profile$length != 150,
+					widthFL = RoundToInt(ServiceResponse$Order$OrderItems$OrderItem.Profile$flangeSum);
+					$nodeValue = IfEmpty($kip.jitterbit.generate_prj_SapCodes_dict_FL[widthFL], 'FL1500');
+					$codes_checker = 1;
+				);
+			);
+			If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'box' & $codes_checker == 0,
+				widthFL = RoundToInt(ServiceResponse$Order$OrderItems$OrderItem.Profile$width);
+				$nodeValue = IfEmpty($kip.jitterbit.generate_prj_SapCodes_dict_FL[widthFL], 'FL1500');
+				$codes_checker = 1;
+			);
+			If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile' & $codes_checker == 0 & bends >= 10,
+				$nodeValue = 'FLPROF';
+				$codes_checker = 1;
+			);
+	
+		);
+
+);
+
+
+$ORDER_CREATE%MATERIAL_ITEM.MATERIAL_CODE$ = $nodeValue;
+
+
+</trans>

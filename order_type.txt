@@ -1,0 +1,18 @@
+If(!IsNull(ResolveOneOf(ServiceResponse$Order$OrderItems$OrderItem#.CustomProperties$PropertiesValues$xml:space)), 
+	If(Length(ResolveOneOf(FindValue('ORDER_TYPE',ServiceResponse$Order$OrderItems$OrderItem#.CustomProperties$PropertiesValues$Item#.name,ServiceResponse$Order$OrderItems$OrderItem#.CustomProperties$PropertiesValues$Item#.))) > 0,
+		ResolveOneOf(FindValue('ORDER_TYPE',ServiceResponse$Order$OrderItems$OrderItem#.CustomProperties$PropertiesValues$Item#.name,ServiceResponse$Order$OrderItems$OrderItem#.CustomProperties$PropertiesValues$Item#.)),
+		'ZKCO'
+	),
+	If(!IsNull(ResolveOneOf(ServiceResponse$Order$OrderItems$OrderItem#.TemplateParameters$xml:space)), 
+		If(Length(ResolveOneOf(FindValue('ORDER_TYPE',ServiceResponse$Order$OrderItems$OrderItem#.TemplateParameters$Item#.name,ServiceResponse$Order$OrderItems$OrderItem#.TemplateParameters$Item#.))) > 0,
+			ResolveOneOf(FindValue('ORDER_TYPE',ServiceResponse$Order$OrderItems$OrderItem#.TemplateParameters$Item#.name,ServiceResponse$Order$OrderItems$OrderItem#.TemplateParameters$Item#.)),
+			'ZKCO'
+		),
+		'ZKCO'
+	)
+)
+
+
+
+
+if ()

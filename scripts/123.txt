@@ -1,0 +1,361 @@
+<trans>
+$kip.jb.string_of_nodes_detail='';
+$kip.jb.string_of_nodes_mat_item = '';
+currency = '';
+If(ServiceResponse$Order$Currency$oid == '45d3d4ec-3f9e-4a12-abfc-ddc4e2b11f9a',
+	currency = 'GBP';
+);
+If(ServiceResponse$Order$Currency$oid == 'f6e2a38e-610a-4027-9493-70cf8b74ddc4',
+	currency = 'EUR';
+);
+If(IfEmpty(currency, 'THEREISNOCURRENCY!!@') != 'THEREISNOCURRENCY!!@',
+	$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','CURRENCY', currency);
+);
+
+IE_checker = 0;
+If(!IsNull(ResolveOneOf(ServiceResponse$Order$OrderItems$OrderItem#.CustomProperties$PropertiesValues$xml:space)), 
+	If(ServiceResponse$Order$BALand$ == 'IE' | ServiceResponse$Order$BALand$ == 'XI' ,
+		IE_checker = 1;
+	),
+	If(!IsNull(ResolveOneOf(ServiceResponse$Order$OrderItems$OrderItem#.TemplateParameters$xml:space)), 
+		If(ServiceResponse$Order$BALand$ == 'IE' | ServiceResponse$Order$BALand$ == 'XI' ,
+			IE_checker = 1;
+		),
+		If(ServiceResponse$Order$BALand$ == 'IE' | ServiceResponse$Order$BALand$ == 'XI' ,
+			IE_checker = 1;
+		);
+	);
+);
+checker = 0;
+Z_PC_checker = 0;
+i = 1;
+If(!IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space) | !IsNull(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$xml:space) | $nodeValue == 'FREIGHT',
+	If(!IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space), 
+		If(Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 1 & FindByPos(1 , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'mark_ID',
+		WriteToOperationLog('ONE ITEM IN CUSTOM'),
+		While(i <= Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),
+			If(!IsNull(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.)),
+				If(Left(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name), 3) != 'BX_' || FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'BX_NO_OF_ITEMS',
+					If(Exist(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),$kip.bendex.array_CNF),
+						//If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) != 'CONDITION' && FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) != 'BENDS',
+						If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) != 'CONDITION',
+						//	If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) != 'MATERIAL_QUANTITY',
+								currentCreateNodeName = FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name);
+								currentCreateNodeValue = FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.);
+								If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'COLOUR',
+									currentCreateNodeName = FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name);
+									currentCreateNodeValue = FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.);
+										If(Length(currentCreateNodeValue) > 20,
+											currentCreateNodeValue = Left(currentCreateNodeValue,20);
+										);
+								);
+								If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'PRODTEXT1',
+									currentCreateNodeName = FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name);
+									currentCreateNodeValue = FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.);
+										If(Length(currentCreateNodeValue) > 28,
+											currentCreateNodeValue = Left(currentCreateNodeValue,28);
+										);
+								);
+									If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'Z_PC_TYPE' | FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'Z_PC_COLOUR',
+										Z_PC_checker = 1;
+									);
+								
+								If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'FAST_TRACK',
+									fast_track_value = FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.);
+									If(fast_track_value == 'Y',
+										$kip.bendex.fast_track = 'Y';
+									);
+									If(fast_track_value == 'N',
+										$kip.bendex.fast_track = 'N';
+									);
+								);
+								$kip.jb.string_of_nodes_detail += '\n' + CreateNode('',currentCreateNodeName, currentCreateNodeValue);
+						//	);
+						);
+					);
+				);	
+				If(FindByPos(i,ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'PACKAGING_SURCHARGE',
+					$kip.jb.string_of_nodes_detail += '\n' + CreateNode('',FindByPos(i,ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name), FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.));
+				);	
+			);
+			i++;
+		);
+		$kip.jb.string_of_nodes_detail = $kip.jb.string_of_nodes_detail + '\n';
+//		$ORDER_CREATE%MATERIAL_ITEM.DETAILING$DUMMY_DETAILING$ = $kip.jb.string_of_nodes_detail;
+		),
+		While(i <= Count(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),
+			If(!IsNull(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.)),
+				If(Left(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name), 3) != 'BX_' || FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name) == 'BX_NO_OF_ITEMS',
+					If(Exist(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),$kip.bendex.array_CNF),
+						If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name) != 'CONDITION',
+						//	If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name) != 'MATERIAL_QUANTITY',
+								currentCreateNodeName = FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name);
+								currentCreateNodeValue = FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.);
+								If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name) == 'COLOUR',
+									currentCreateNodeName = FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name);
+									currentCreateNodeValue = FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.);
+									If(Length(currentCreateNodeValue) > 20,
+										currentCreateNodeValue = Left(currentCreateNodeValue,20);
+									);
+								);
+								If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name) == 'PRODTEXT1',
+									currentCreateNodeName = FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name);
+									currentCreateNodeValue = FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.);
+									If(Length(currentCreateNodeValue) > 28,
+										currentCreateNodeValue = Left(currentCreateNodeValue,28);
+									);
+								);
+									If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name) == 'Z_PC_TYPE' | FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name) == 'Z_PC_COLOUR',
+										Z_PC_checker = 1;
+									);
+								If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name) == 'FAST_TRACK',
+									fast_track_value = FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.);
+									If(fast_track_value == 'Y',
+										$kip.bendex.fast_track = 'Y';
+									);
+									If(fast_track_value == 'N',
+										$kip.bendex.fast_track = 'N';
+									);
+								);
+								$kip.jb.string_of_nodes_detail += '\n' + CreateNode('',currentCreateNodeName, currentCreateNodeValue);
+						//	);
+						)
+					)
+				);	
+				If(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name) == 'PACKAGING_SURCHARGE',
+					$kip.jb.string_of_nodes_detail += '\n' + CreateNode('',FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name), FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.));
+				);	
+			);
+			i++;
+		);
+		$kip.jb.string_of_nodes_detail = $kip.jb.string_of_nodes_detail + '\n';
+	//	$ORDER_CREATE%MATERIAL_ITEM.DETAILING$DUMMY_DETAILING$ = $kip.jb.string_of_nodes_detail;
+	);
+);
+
+//If(IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space)  &&
+//	IsNull(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$xml:space) < 1 && $nodeValue != 'FREIGHT',
+
+$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','BENDEX_POS',ServiceResponse$Order$OrderItems$OrderItem.PositionString$);
+
+
+If((IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space) | (Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 1 & FindByPos(1 , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'mark_ID')) &&
+	IsNull(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$xml:space) && $nodeValue != 'FREIGHT',
+
+
+	$kip.jb.string_of_nodes_detail = '';
+	If(IfEmpty(currency, 'THEREISNOCURRENCY!!@') != 'THEREISNOCURRENCY!!@',
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','CURRENCY', currency);
+	);
+	$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','BENDEX_POS',ServiceResponse$Order$OrderItems$OrderItem.PositionString$);
+	length_to_int = 0.0;
+	length_to_int = Float(ServiceResponse$Order$OrderItems$OrderItem.Length$);
+	If(length_to_int > 3000,
+		length_flag = '3+';,
+		length_flag = '3-';
+	);
+//----------------------------------------------------------------------------------------------------------------------------
+	If(	Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Flanges$Flange#.angle) > 0 |
+		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Flanges$Flange#.length) > 0,
+			angels = Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Flanges$Flange#.angle);
+			lengthes = Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Flanges$Flange#.length);
+
+//			hemRi_counter_array = 0;
+//
+//			hemRi_counter_array = hemRi_counter_array + ServiceResponse$Order$OrderItems$OrderItem.Profile$Flanges$Flange#.hemRi;
+//
+//			i = 0;
+//			$hemRi_counter = 0;
+//
+//			While(i < Length(hemRi_counter_array),
+//				$hemRi_counter = $hemRi_counter + hemRi_counter_array[i];
+//				i++;
+//			);
+			$hemRi_counter = Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Flanges$Flange#.hemRi);
+			WriteToOperationLog('HEMRI - '+ $hemRi_counter);
+			WriteToOperationLog('HEMRI BENDING- '+ ServiceResponse$Order$OrderItems$OrderItem.Profile$bendingCount);
+			bends = ServiceResponse$Order$OrderItems$OrderItem.Profile$bendingCount - $hemRi_counter;
+			
+	);
+
+
+//		If(Length(ServiceResponse$Order$OrderItems$OrderItem.Profile$bendingCount) > 0,
+//			bends = ServiceResponse$Order$OrderItems$OrderItem.Profile$bendingCount;,
+//			bends = '';
+//		);
+
+//----------------------------------------------------------------------------------------------------------------------------
+	/*	perforation_absX = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.absX);
+		perforation_absY =		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.absY);
+		perforation_flangeIndex = 	Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.flangeIndex);
+		perforation_kind = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.kind);
+		perforation_width = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.width);
+		perforation_x = 			Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.x);
+		perforation_xAnchor = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.xAnchor);
+		perforation_y = 			Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.y);
+		perforation_yAnchor = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.yAnchor);
+	
+		perforation_sum = perforation_absX + perforation_absY + perforation_flangeIndex + perforation_kind + perforation_width + perforation_x + perforation_xAnchor + perforation_y + perforation_yAnchor; 
+	
+
+		notch_corner =			Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Notches$Notch#.corner);
+		notch_height =			Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Notches$Notch#.height);
+		notch_kind =				Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Notches$Notch#.kind);
+		notch_width =				Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Notches$Notch#.width);
+		
+		notch_sum = notch_corner + notch_height + notch_kind + notch_width;
+
+
+		cuts_angle = 				Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Cuts$Cut#.angle);
+		cuts_flangeIndex = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Cuts$Cut#.flangeIndex);
+		cuts_kind =				Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Cuts$Cut#.kind);
+
+		cuts_sum = cuts_angle + cuts_flangeIndex + cuts_kind;
+
+		If(perforation_sum > 0 || notch_sum > 0 || cuts_sum > 0, extra_operations = 'P');  */
+// NEW UPDATE, NOW EXTRA OPERATIONS FOR ALL ORDERS
+
+	
+	material_oid = ServiceResponse$Order$OrderItems$OrderItem.Material$oid;
+//	front_color_oid = ServiceResponse$Order$OrderItems$OrderItem.FrontColor$oid;
+	If(IsNull(material_oid),material_oid = '');
+//	If(IsNull(front_color_oid),front_color_oid = '');
+	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile',
+		safe_edge_nodevalue = $hemRi_counter;
+	);
+	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile' & ServiceResponse$Order$OrderItems$OrderItem.Profile$length == 150,
+		safe_edge_nodevalue = Null();
+	);
+/*	If(ServiceResponse$Order$OrderItems$OrderItem.Name$ == 'Adapter Profile',
+		safe_edge_nodevalue = Null();
+	);*/
+/*	If(Length($hemRi_counter) > 1,
+	If($hemRi_counter > 0,
+		safe_edge_nodevalue = $hemRi_counter,
+		safe_edge_nodevalue = '';
+	);*/
+
+	$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','COIL_METAL_EXT', $kip.jitterbit.generate_prj_coil_metal_ext_dict[material_oid]);
+	WriteToOperationLog($kip.jitterbit.generate_prj_coil_metal_ext_dict[material_oid]);
+	WriteToOperationLog($kip.jitterbit.generate_prj_coil_finish_ext_dict[material_oid]);
+	WriteToOperationLog($kip.jitterbit.generate_prj_coil_guige_ext_dict[material_oid]);
+	WriteToOperationLog($kip.jitterbit.generate_prj_coil_colour_ext_dict[material_oid]);
+	$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','COIL_FINISH_EXT', $kip.jitterbit.generate_prj_coil_finish_ext_dict[material_oid]);
+	$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','COIL_GAUGE_EXT', String($kip.jitterbit.generate_prj_coil_guige_ext_dict[material_oid]));
+	$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','COIL_COLOUR_EXT', 	$kip.jitterbit.generate_prj_coil_colour_ext_dict[material_oid]);
+	$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','LENGTH_FLAG', length_flag);
+	If(HasKey($coverWidth2Dict,material_oid),
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','COVER_WIDTH2', $coverWidth2Dict[material_oid]),
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','COVER_WIDTH2', 1208);
+	);
+	$check = 0;
+	If($nodeValue == 'FLPROF',
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','BENDS', 30);
+		$check = 1;
+	);
+	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile' & $check == 0,
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','BENDS', bends);
+	);
+	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile',
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','SAFE_EDGE', safe_edge_nodevalue);
+	);
+		If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'box',
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','BENDS', ServiceResponse$Order$OrderItems$OrderItem.Profile$bendingCount);
+	);
+	
+	/*If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile',
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','BENDS', bends);
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','SAFE_EDGE', safe_edge_nodevalue);
+	);
+	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'box',
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','BENDS', ServiceResponse$Order$OrderItems$OrderItem.Profile$bendingCount);
+	);*/
+	
+
+);
+extra_operations = Null();
+perforation_absX = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.absX);
+perforation_absY =		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.absY);
+perforation_flangeIndex = 	Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.flangeIndex);
+perforation_kind = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.kind);
+perforation_width = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.width);
+perforation_x = 			Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.x);
+perforation_xAnchor = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.xAnchor);
+perforation_y = 			Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.y);
+perforation_yAnchor = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Perforations$Perforation#.yAnchor);
+
+perforation_sum = perforation_absX + perforation_absY + perforation_flangeIndex + perforation_kind + perforation_width + perforation_x + perforation_xAnchor + perforation_y + perforation_yAnchor; 
+
+notch_corner =			Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Notches$Notch#.corner);
+notch_height =			Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Notches$Notch#.height);
+notch_kind =				Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Notches$Notch#.kind);
+notch_width =				Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Notches$Notch#.width);
+
+notch_sum = notch_corner + notch_height + notch_kind + notch_width;
+
+cuts_angle = 				Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Cuts$Cut#.angle);
+cuts_flangeIndex = 		Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Cuts$Cut#.flangeIndex);
+cuts_kind =				Count(ServiceResponse$Order$OrderItems$OrderItem.Profile$Cuts$Cut#.kind);
+
+cuts_sum = cuts_angle + cuts_flangeIndex + cuts_kind;
+
+
+
+If((IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space) | (Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 1 & FindByPos(1 , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'mark_ID')) & IsNull(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$xml:space),
+	If(perforation_sum > 0 || notch_sum > 0 || cuts_sum > 0 , extra_operations = 'P');
+//	If(perforation_sum > 0 || notch_sum > 0, extra_operations = 'P'); 
+	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'box',
+		 extra_operations = 'P';
+	);
+);
+tapered_check = 0;
+If(ServiceResponse$Order$OrderItems$OrderItem.Profile$conical == true,
+	tapered_check = 1;
+);
+If(tapered_check == 1,
+	$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','TAPERED', 'Y');
+);
+
+$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','EXTRA_OPERATIONS', extra_operations);
+/*If((IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space) | (Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 1 & FindByPos(1 , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'mark_ID')) & IsNull(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$xml:space),
+	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'box',
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','MATERIAL_QUANTITY', 1);
+	);
+);*/
+$hemRi_counter = 0;
+
+If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'composition',
+ 	$kip.jb.positionStringFlag = ServiceResponse$Order$OrderItems$OrderItem.PositionString$;
+);
+
+If(CountSubString(ServiceResponse$Order$OrderItems$OrderItem.PositionString$,'.'),
+	If(Left(ServiceResponse$Order$OrderItems$OrderItem.PositionString$,Length($kip.jb.positionStringFlag)) == $kip.jb.positionStringFlag,
+		If(IfEmpty(ServiceResponse$Order$OrderItems$OrderItem.MasterItem$, 'NOHEREISEMPTY123') != 'NOHEREISEMPTY123',
+			$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','SUB_COMPONENT',ServiceResponse$Order$OrderItems$OrderItem.MasterItem$);
+		);
+		
+	);
+);
+
+If(IfEmpty(ServiceResponse$Order$OrderItems$OrderItem.FrontColor$oid, 'NOHEREISEMPTY123') != 'NOHEREISEMPTY123' & Z_PC_checker == 0,
+	WriteToOperationLog('CHECKER - '+HasKey($kip.jitterbit.generate_front_colour.colour_dict, ServiceResponse$Order$OrderItems$OrderItem.FrontColor$oid));
+	WriteToOperationLog('OID - '+ ServiceResponse$Order$OrderItems$OrderItem.FrontColor$oid);
+	WriteToOperationLog('TEST - '+$kip.jitterbit.generate_front_colour.colour_dict['efd3dcdb-18dd-45f4-83b3-516abe949bd5']);
+	WriteToOperationLog('COLOUR - '+$kip.jitterbit.generate_front_colour.colour_dict[ServiceResponse$Order$OrderItems$OrderItem.FrontColor$oid]);
+	If(IE_checker == 0,
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','Z_PC_COLOUR',$kip.jitterbit.generate_front_colour.colour_dict[ServiceResponse$Order$OrderItems$OrderItem.FrontColor$oid]);
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','Z_PC_TYPE',$kip.jitterbit.generate_front_colour.type_dict[ServiceResponse$Order$OrderItems$OrderItem.FrontColor$oid]),
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','COLOUR',$kip.jitterbit.generate_front_colour.colour_IE_dict[ServiceResponse$Order$OrderItems$OrderItem.FrontColor$oid]);
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','PAINTED',$kip.jitterbit.generate_front_colour.type_IE_dict[ServiceResponse$Order$OrderItems$OrderItem.FrontColor$oid]);
+	);
+	
+);
+If((IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space) | (Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 1)) &
+	IsNull(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$xml:space) & $nodeValue != 'FREIGHT',
+	If($nodeValue != 'FLPROF',
+		$kip.jb.string_of_nodes_detail += '\n' + CreateNode('','NO_ITEMS', Int(ServiceResponse$Order$OrderItems$OrderItem.Quantity$));
+	);
+);
+
+$ORDER_CREATE%MATERIAL_ITEM.DETAILING$DUMMY_DETAILING$ = $kip.jb.string_of_nodes_detail;
+</trans>

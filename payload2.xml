@@ -1,0 +1,261 @@
+<ServiceResponse xmlns="http://www.microsea.at/products/bendex/data/1.0/" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <Orders>
+            <Order>
+                <Oid>d046695f-9194-4dd3-b91b-638662572408</Oid>
+                <Did>119480</Did>
+                <CreatedOn>2025-02-25T12:06:57.837Z</CreatedOn>
+                <CreatedBy>iwappat</CreatedBy>
+                <ChangedOn>2025-02-25T12:06:58.413Z</ChangedOn>
+                <ChangedBy>iwappat</ChangedBy>
+                <Customer oid="6d68e509-2233-42e1-a807-978fb46a3cce" externalID="KIP Business">Kingspan Facades CAD</Customer>
+                <BACompany>Kingspan Facades CAD</BACompany>
+                <BACompany2>Kingspan</BACompany2>
+                <BACompany3></BACompany3>
+                <BASalutation></BASalutation>
+                <BATitle></BATitle>
+                <BAFirstName></BAFirstName>
+                <BALastName></BALastName>
+                <BAStreetAddress>Widespan Works</BAStreetAddress>
+                <BAZIP>Sherburn</BAZIP>
+                <BACity>Malton, Yorkshire</BACity>
+                <BAState>YN - North Yorkshire</BAState>
+                <BALand>X123I</BALand>
+                <SACompany></SACompany>
+                <SACompany2></SACompany2>
+                <SACompany3>TBC</SACompany3>
+                <SASalutation></SASalutation>
+                <SATitle></SATitle>
+                <SAFirstName></SAFirstName>
+                <SALastName></SALastName>
+                <SAStreetAddress>Widespan Works</SAStreetAddress>
+                <SAZIP>Sherburn</SAZIP>
+                <SACity>Malton, Yorkshire</SACity>
+                <SAState>YN - North Yorkshire</SAState>
+                <SALand>GB</SALand>
+                <Date>2025-02-25T12:06:57.837</Date>
+                <VATID></VATID>
+                <Comments></Comments>
+                <Phone></Phone>
+                <Email></Email>
+                <InternalComments></InternalComments>
+                <DeliveryComments></DeliveryComments>
+                <DeliveryType oid="4166c19f-0dbb-4b9b-9690-cfbba0588b3f">EO-UK-FSLALL - Collection</DeliveryType>
+                <Description>1-1215382 - Titan Steel Ltd - Alford Auto Station </Description>
+                <Total>0.0000</Total>
+                <TotalInBaseCurrency>0.0000</TotalInBaseCurrency>
+                <TotalTaxAmount>0</TotalTaxAmount>
+                <GrossTotal>0</GrossTotal>
+                <TotalWeight>337.75612097610000000000</TotalWeight>
+                <TotalWeightConverted>337.756120976100000</TotalWeightConverted>
+                <TotalWeightText>337.756 kg</TotalWeightText>
+                <ExternalID></ExternalID>
+                <CustomerReference></CustomerReference>
+                <SpecialDiscount>0.0000000000</SpecialDiscount>
+                <Status oid="f310f605-d67f-4bee-9d41-5822519d18d7">New</Status>
+                <StatusList oid="30c7daae-41ef-45c3-85f1-62d6c05d05ba"/>
+                <DeliveryDate>2025-03-06T00:00:00</DeliveryDate>
+                <UserLogon>iwappat</UserLogon>
+                <PaymentDetails oid="5016c51c-642c-4ac7-aaa8-8147030693a5">Standard Payment Terms</PaymentDetails>
+                <Offer oid="67153c6b-6b8a-4623-bff0-4b6d0dbedcca">141071</Offer>
+                <ScheduledOn>0001-01-01T00:00:00</ScheduledOn>
+                <AcceptedOn>0001-01-01T00:00:00</AcceptedOn>
+                <ProducedOn>0001-01-01T00:00:00</ProducedOn>
+                <CompletedOn>0001-01-01T00:00:00Z</CompletedOn>
+                <DeliveryCreatedOn>0001-01-01T00:00:00Z</DeliveryCreatedOn>
+                <InvoiceCreatedOn>0001-01-01T00:00:00Z</InvoiceCreatedOn>
+                <ExportedOn/>
+                <EmailSentOn/>
+                <ProductionStartedOn>0001-01-01T00:00:00</ProductionStartedOn>
+                <Currency oid="45d3d4ec-3f9e-4a12-abfc-ddc4e2b11f9a">GBP</Currency>
+                <ExchangeRate>1.0000000000</ExchangeRate>
+                <OldOrder/>
+                <OrderItems>
+                    <OrderItem>
+                        <Oid>c14eec0a-0c8e-494d-99e0-10bdd54f7fd6</Oid>
+                        <Index>1</Index>
+                        <Comments></Comments>
+                        <CustomerReference></CustomerReference>
+                        <Date>2025-02-25T12:06:57.837</Date>
+                        <Description>Cassette Details:
+      Part Ref: A1 
+      Face Width: 625 mm
+      Face Height: 509 mm
+      Face Depth: 32 mm
+      Cassette Type: FLAT
+Order Details: 
+      Sales Order Number: 1001215382
+      Sales Order Item: 20
+      Elevation: A
+      Bundle:  B02 x 6, 
+Material Details: 
+      Material: Aluminium 3103 Kingspan Dri-Design | 2.00mm | Mill Finished 
+Finish Details: 
+      PPC: Single Sided 1 Coat
+      Colour: Kingspan Grey 0042
+Stiffener Details: 
+      Quantity:0
+      Length: 0 mm
+      Pitch: 0 mm   
+Configuration: 
+      Top: Standard
+      LHS: LH Female
+      RHS: RH Male</Description>
+                        <Article/>
+                        <Material oid="16d7c8f0-25ec-42b4-9cb9-c2fc38f23c37" externalID="DRIDESIGN">Aluminium 3103 Kingspan Dri-Design | 2.00mm | Mill Finished </Material>
+                        <ProductionItemCategory/>
+                        <Name>KSF DD Type 1-6 V4.1</Name>
+                        <TranslatedName>KSF DD Type 1-6 V4.1</TranslatedName>
+                        <Position>1</Position>
+                        <PositionString>1</PositionString>
+                        <Price>0</Price>
+                        <PriceInBaseCurrency>0.0000</PriceInBaseCurrency>
+                        <PricePerUnit>0</PricePerUnit>
+                        <DiscountPrice>0.0000</DiscountPrice>
+                        <DiscountPriceInBaseCurrency>0.0000</DiscountPriceInBaseCurrency>
+                        <DiscountPriceConverted>0.0000</DiscountPriceConverted>
+                        <DiscountPricePerUnit>0.0000</DiscountPricePerUnit>
+                        <DiscountPricePerUnitConverted>0.000000000</DiscountPricePerUnitConverted>
+                        <CalculatedDiscount>0.0000000000</CalculatedDiscount>
+                        <Length>674.4144000000</Length>
+                        <LengthConverted>674.41440</LengthConverted>
+                        <Quantity>6.0000000000</Quantity>
+                        <QuantityConverted>6.00000</QuantityConverted>
+                        <ShoppingItemType>123Shipping123</ShoppingItemType>
+                        <Weight>2.6448282207</Weight>
+                        <WeightConverted>2.6448282207</WeightConverted>
+                        <Tax>20.0000</Tax>
+                        <Discount>0</Discount>
+                        <ArticleID></ArticleID>
+                        <StockLevelUpdatedOn/>
+                        <AccountingUnit oid="c5ba0b9a-505c-4ae8-a0c4-d1e6d2cc1ed8">Piece</AccountingUnit>
+                        <ProfileAreaAccounting>0.461614427202728</ProfileAreaAccounting>
+                        <ProfileAreaAccountingConverted>0.461614427202728</ProfileAreaAccountingConverted>
+                        <MaterialUsageRectangular>0.484400840457600000</MaterialUsageRectangular>
+                        <MaterialUsageRectangularConverted>0.4844008404576</MaterialUsageRectangularConverted>
+                        <MaterialUsageCalculated>0.8961618547</MaterialUsageCalculated>
+                        <MaterialUsageCalculatedConverted>0.8961618547</MaterialUsageCalculatedConverted>
+                        <MaterialUsageCalculatedWeight>4.89304372666200000000</MaterialUsageCalculatedWeight>
+                        <MaterialUsageCalculatedWeightConverted>4.893043726662000</MaterialUsageCalculatedWeightConverted>
+                        <MaterialUsageCutting>0</MaterialUsageCutting>
+                        <MaterialUsageCuttingConverted>0</MaterialUsageCuttingConverted>
+                        <MaterialUsageNet>0.8961618547</MaterialUsageNet>
+                        <MaterialUsageNetConverted>0.8961618547</MaterialUsageNetConverted>
+                        <MaterialUsageScrap>0</MaterialUsageScrap>
+                        <MaterialUsageScrapConverted>0</MaterialUsageScrapConverted>
+                        <MaterialUsageStatistical>5.37697112820000000000</MaterialUsageStatistical>
+                        <MaterialUsageStatisticalConverted>5.37697112820</MaterialUsageStatisticalConverted>
+                        <ProductionCostCalculatedArticle>0</ProductionCostCalculatedArticle>
+                        <ProductionCostCalculatedCoating>0.0000</ProductionCostCalculatedCoating>
+                        <ProductionCostCalculatedLabor>6.38275343950200000000</ProductionCostCalculatedLabor>
+                        <ProductionCostCalculatedMaterial>15.53944656049800000000</ProductionCostCalculatedMaterial>
+                        <ProductionCostCalculatedSum>21.9222</ProductionCostCalculatedSum>
+                        <ProductionCostStatisticalMaterial>15.53944656049800000000</ProductionCostStatisticalMaterial>
+                        <ProductionTimeCalculatedPreparation>0.0000</ProductionTimeCalculatedPreparation>
+                        <ProductionTimeCalculatedStockControl>0.0000</ProductionTimeCalculatedStockControl>
+                        <ProductionTimeCalculatedCutting>0.0000</ProductionTimeCalculatedCutting>
+                        <ProductionTimeCalculatedPunching>581.5307</ProductionTimeCalculatedPunching>
+                        <ProductionTimeCalculatedMilling>0.0000</ProductionTimeCalculatedMilling>
+                        <ProductionTimeCalculatedBending>195.0000</ProductionTimeCalculatedBending>
+                        <ProductionTimeCalculatedRollforming>0.0000</ProductionTimeCalculatedRollforming>
+                        <ProductionTimeCalculatedWelding>0.0000</ProductionTimeCalculatedWelding>
+                        <ProductionTimeCalculatedGrinding>0.0000</ProductionTimeCalculatedGrinding>
+                        <ProductionTimeCalculatedManual>0.0000</ProductionTimeCalculatedManual>
+                        <ProductionTimeCalculatedArticle>0.0000</ProductionTimeCalculatedArticle>
+                        <ProductionTimeCalculatedComposition>0.0000</ProductionTimeCalculatedComposition>
+                        <ProductionTimeCalculatedCoating>0.0000</ProductionTimeCalculatedCoating>
+                        <ProductionTimeCalculatedPacking>0.0000</ProductionTimeCalculatedPacking>
+                        <ProductionTimeCalculatedCoil>0.0000</ProductionTimeCalculatedCoil>
+                        <ProductionTimeCalculatedPanelProduction>0.0000</ProductionTimeCalculatedPanelProduction>
+                        <ProductionTimeCalculatedCuttingLaser>0.0000</ProductionTimeCalculatedCuttingLaser>
+                        <ProductionTimeCalculatedCuttingPlasma>0.0000</ProductionTimeCalculatedCuttingPlasma>
+                        <ProductionTimeCalculatedSawing>0.0000</ProductionTimeCalculatedSawing>
+                        <ProductionTimeRealPreparation>0</ProductionTimeRealPreparation>
+                        <ProductionTimeRealStockControl>0</ProductionTimeRealStockControl>
+                        <ProductionTimeRealCutting>0</ProductionTimeRealCutting>
+                        <ProductionTimeRealPunching>0</ProductionTimeRealPunching>
+                        <ProductionTimeRealMilling>0</ProductionTimeRealMilling>
+                        <ProductionTimeRealBending>0</ProductionTimeRealBending>
+                        <ProductionTimeRealRollforming>0</ProductionTimeRealRollforming>
+                        <ProductionTimeRealWelding>0</ProductionTimeRealWelding>
+                        <ProductionTimeRealGrinding>0</ProductionTimeRealGrinding>
+                        <ProductionTimeRealManual>0</ProductionTimeRealManual>
+                        <ProductionTimeRealArticle>0</ProductionTimeRealArticle>
+                        <ProductionTimeRealComposition>0</ProductionTimeRealComposition>
+                        <ProductionTimeRealCoating>0</ProductionTimeRealCoating>
+                        <ProductionTimeRealPacking>0</ProductionTimeRealPacking>
+                        <ProductionTimeRealPanelProduction>0</ProductionTimeRealPanelProduction>
+                        <ProductionTimeRealCuttingLaser>0</ProductionTimeRealCuttingLaser>
+                        <ProductionTimeRealCuttingPlasma>0</ProductionTimeRealCuttingPlasma>
+                        <ProductionTimeRealSawing>0</ProductionTimeRealSawing>
+                        <MarginCalculatedDiscounted>-21.9222</MarginCalculatedDiscounted>
+                        <MarginCalculatedUndiscounted>-21.9222</MarginCalculatedUndiscounted>
+                        <BuyPriceArticle>-1.0000000000</BuyPriceArticle>
+                        <BuyPriceMaterial>17.3400000000</BuyPriceMaterial>
+                        <ManualProcessing>false</ManualProcessing>
+                        <Code></Code>
+                        <HasNoPrice>false</HasNoPrice>
+                        <DocumentLink></DocumentLink>
+                        <CustomFunctions></CustomFunctions>
+                        <CustomProperties>
+                          <PropertiesValues xml:space="preserve" xmlns="">
+                            <Item name="BX_SQM">0.480000</Item>
+                            <Item name="BX_PPCPRICEM2">0.0</Item>
+                            <Item name="SAPCODE">FLCORNER</Item>
+                            <Item name="GIRTH">0.472</Item>
+                            
+                            <Item name="DISTRIBUTION_CHANNEL">G4_1111</Item>
+                            <Item name="DIVISION">15123</Item>
+                            <Item name="PLANT">GB20</Item>
+                            <Item name="ORDER_QTY">2.0000000000</Item>
+                            <Item name="DISTRIBUTION LIST">Flashings</Item>
+                            <Item name="BENDS">7</Item>
+                            <Item name="BX_CURVED_FLASHING">FL600</Item>
+                            <Item name="FLASHING_TYPE"/>
+                            <Item name="CURVED_FLASHING">600</Item>
+                            <Item name="BX_LENGTHA">400.00000</Item>
+                            <Item name="BX_LENGTHB">400.00000</Item>
+                            <Item name="BX_Angle">164</Item>
+                            <Item name="length">800.00000</Item>
+                            <Item name="LENGTH">0.80000</Item>
+                            <Item name="COVER_WIDTH2">1208</Item>
+                            <Item name="COIL_METAL_EXT">S</Item>
+                            <Item name="COIL_FINISH_EXT">DSXL</Item>
+                            <Item name="COIL_GAUGE_EXT">0.66</Item>
+                            <Item name="COIL_COLOUR_EXT">BS10A05/BS18B25</Item>
+                            <Item name="CAD_FLAG">Y</Item>
+                            <Item name="LENGTH_FLAG">3-</Item>
+                            <Item name="BX_VARIANT_PRICE">7FL600</Item>
+                            <Item name="BX_VARIANT_PPCPRICE"/>
+                            <Item name="NO_OF_ITEMS">2</Item>
+                            <Item name="BUNDLE_NO">1</Item>
+                            <Item name="ID_MARK">FL16000</Item>
+                            <Item name="BENDEX_POSITION"/>
+                            <Item name="Country">United Kingdom</Item>
+                            <Item name="Country_v"/>
+                            <Item name="COLOUR"/>
+                            <Item name="BX_PC_PRICECOLOUR"/>
+                            <Item name="LOAD_NO">1</Item>
+                            <Item name="Z_BASEPRICE">40.2466712</Item>
+                            <Item name="DiscountLevel">0.55</Item>
+                            <Item name="Price_Sub_Total">40.2466712</Item>
+                            <Item name="BX_PPCPRICE">0.0</Item>
+                            <Item name="Product_Type">Flashings</Item>
+                            <Item name="Product_Range">Flashings</Item>
+                            <Item name="Product_ForC">Corner</Item>
+                            <Item name="Product_Comments">Angle: 164</Item>
+                            <Item name="PRODTEXT1"/>
+                            <Item name="_frontCoating">00000000-0000-0000-0000-000000000000</Item>
+                            <Item name="_material">d6dcc476-dc31-43bc-b7ce-da50f140d772</Item>
+                            <Item name="BX_EXT_COLOUR">GWG</Item>
+                            <Item name="EXT_COL_VIS">true</Item>
+                          </PropertiesValues>
+                        </CustomProperties>
+                        <Profile name="KSF DD Type 1-6 V4.1" kind="box" width="718.254" accountingWidth="718.254" length="674.4144" thickness="2" frontFacing="false" bendingCount="14"/>
+                    </OrderItem>
+                </OrderItems>
+            </Order>
+        </Orders>
+    <Details i:nil="true"/>
+    <Result>Success</Result>
+    <Version>1</Version>
+</ServiceResponse>

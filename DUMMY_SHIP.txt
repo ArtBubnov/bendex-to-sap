@@ -1,0 +1,10 @@
+If(CountSubString(ServiceResponse$Order$OrderItems$OrderItem.ShoppingItemType$,'Shipping') > 0,
+	CreateNode('', 'ShoppingItemType', ServiceResponse$Order$OrderItems$OrderItem.ShoppingItemType$)
+)
+
+
+
+
+
+//--------------"DIVISION"{ START---------------------------------------------------------------------
+//**************"DIVISION"{ END**********************************************************************

@@ -1,0 +1,35 @@
+order_type
+    1 tested
+    2 SHOULD BE COMMENTED
+    3 NOT IMPORTED IN BOOMI
+    4 NOT TESTED IN BOOMI
+
+sales_org
+    1 tested
+    2 SHOULD BE COMMENTED
+    3 NOT IMPORTED IN BOOMI
+    4 NOT TESTED IN BOOMI
+
+distribution_channel
+    1 tested
+    2 SHOULD BE COMMENTED
+    3 NOT IMPORTED IN BOOMI
+    4 NOT TESTED IN BOOMI
+
+division
+    1 tested
+    2 SHOULD BE COMMENTED
+    3 NOT IMPORTED IN BOOMI
+    4 NOT TESTED IN BOOMI
+
+dummy_ship
+    1 tested
+    2 SHOULD BE COMMENTED
+    3 NOT IMPORTED IN BOOMI
+    4 NOT TESTED IN BOOMI
+
+material_code
+    1 tested
+    2 SHOULD BE COMMENTED
+    3 NOT IMPORTED IN BOOMI
+    4 NOT TESTED IN BOOMI

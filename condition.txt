@@ -1,0 +1,32 @@
+<trans>
+$kip.jb.BS_checker = 0;
+$nodeValue = '';
+$kip.bendex.name = '';
+$kip.bendex.if_item_is_shipping = '';
+list = ReadArrayString($kip.bendex.distribution_list);
+If(!IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space),
+	If(Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 1 & FindByPos(1 , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'mark_ID',
+		WriteToOperationLog('ONE ITEM IN CUSTOM'), 
+		If(Length(FindValue('DISTRIBUTION LIST',ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.)) > 0,
+			If(Exist(FindValue('DISTRIBUTION LIST',ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.),list),
+				$kip.jb.area_checker = 'wrong_area';
+				$kip.jb.operation_log += 'WARNING: Product Area is '+FindValue('DISTRIBUTION LIST',ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.)+', further actions stopped. \r\n',
+				$kip.jb.operation_log += 'INFO: Product Area is '+ FindValue('DISTRIBUTION LIST',ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.)+'\r\n';
+	
+			),
+			$kip.jb.operation_log += 'INFO: No product Areas, actions continues \r\n';
+		);
+	);
+	,
+	If(Length(FindValue('DISTRIBUTION LIST',ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.)) > 0,
+		If(Exist(FindValue('DISTRIBUTION LIST',ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.),list),
+			$kip.jb.area_checker = 'wrong_area';
+			$kip.jb.operation_log += 'WARNING: Product Area is '+FindValue('DISTRIBUTION LIST',ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.)+', further actions stopped. \r\n',
+			$kip.jb.operation_log += 'INFO: Product Area is '+ FindValue('DISTRIBUTION LIST',ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.)+'\r\n';
+			
+		),
+		$kip.jb.operation_log += 'INFO: No product Areas, actions continues \r\n';
+	);
+);
+true;
+</trans>

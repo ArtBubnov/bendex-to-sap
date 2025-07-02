@@ -1,0 +1,91 @@
+<trans>
+finalvar = '';
+$kip.jb.string_of_nodes_checker = '';
+$kip.jb.dictionary_trigger = 0;
+i = 1;
+ORDER_QTY = '';
+If(!IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space), 
+	If(Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 1 & FindByPos(1 , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'mark_ID',
+		WriteToOperationLog('ONE ITEM IN CUSTOM'),
+		While($kip.jb.dictionary_trigger != 1 & i <= Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),
+			If(!IsNull(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.)),
+				If(Left(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name), 3) != 'BX_',
+					If(Exist(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),$kip.bendex.array_DET),
+						$kip.jb.string_of_nodes_checker += CreateNode('',FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.));
+						$kip.jb.dictionary_trigger = 1;
+					);
+					If(Exist(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),$kip.bendex.array_CNF),
+						$kip.jb.string_of_nodes_checker += CreateNode('',FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name),FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.));
+						$kip.jb.dictionary_trigger = 1;
+					);
+				);	
+			);
+			i++;
+		);
+	);
+	If(Length($kip.jb.string_of_nodes_checker) == 0,
+		If(CountSubString(ServiceResponse$Order$OrderItems$OrderItem.ShoppingItemType$,'Shipping') > 0,
+			ORDER_QTY = ServiceResponse$Order$OrderItems$OrderItem.Quantity$,
+			ORDER_QTY = FindValue('ORDER_QTY',ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.)
+		),
+		ORDER_QTY = FindValue('ORDER_QTY',ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.)
+	),
+
+
+
+	
+	While($kip.jb.dictionary_trigger != 1 & i <= Count(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),
+		If(!IsNull(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.)),
+			If(Left(FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name), 3) != 'BX_',
+				If(Exist(FindByPos(i ,ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),$kip.bendex.array_DET),
+					$kip.jb.string_of_nodes_checker += CreateNode('',FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.));
+					$kip.jb.dictionary_trigger = 1;
+				);
+				If(Exist(FindByPos(i ,ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),$kip.bendex.array_CNF),
+					$kip.jb.string_of_nodes_checker += CreateNode('',FindByPos(i , ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name),FindByPos(i, ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.));
+					$kip.jb.dictionary_trigger = 1;
+				)
+			);	
+		);
+		i++;
+	);
+	If(Length($kip.jb.string_of_nodes_checker) == 0,
+		If(CountSubString(ServiceResponse$Order$OrderItems$OrderItem.ShoppingItemType$,'Shipping') > 0,
+			ORDER_QTY = ServiceResponse$Order$OrderItems$OrderItem.Quantity$,
+			ORDER_QTY = FindValue('ORDER_QTY',ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.)
+		),
+		ORDER_QTY = FindValue('ORDER_QTY',ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.name,ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$Item#.)
+	)
+);
+
+
+If((IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space) | (Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 1 & FindByPos(1 , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'mark_ID')) &
+	IsNull(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$xml:space) & $nodeValue != 'Shipping',
+		ORDER_QTY = ServiceResponse$Order$OrderItems$OrderItem.Quantity$;
+);
+finalvar = Round(ORDER_QTY, 3);
+
+If((IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$xml:space) | (Count(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 1 & FindByPos(1 , ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$PropertiesValues$Item#.name) == 'mark_ID')) & IsNull(ServiceResponse$Order$OrderItems$OrderItem.TemplateParameters$xml:space),
+	checker = 0;
+	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile' & ServiceResponse$Order$OrderItems$OrderItem.Profile$length == 150 & checker == 0,
+		finalvar = Int(ServiceResponse$Order$OrderItems$OrderItem.Quantity$);
+		checker = 1;
+	);
+	length = Double(ServiceResponse$Order$OrderItems$OrderItem.Profile$length);
+	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile' & ServiceResponse$Order$OrderItems$OrderItem.Profile$length != 150 & checker == 0,
+		finalvar = Double(length/1000);
+		finalvar = Double(Round(finalvar, 3))*Int(ServiceResponse$Order$OrderItems$OrderItem.Quantity$);
+		checker = 1;
+	);
+	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'box' & checker == 0,
+		finalvar = Double(length/1000);
+		finalvar = Double(Round(finalvar, 3))*Int(ServiceResponse$Order$OrderItems$OrderItem.Quantity$);
+		checker = 1;
+	);
+	If(ServiceResponse$Order$OrderItems$OrderItem.ShoppingItemType$ == 'Shipping' & checker == 0,
+		finalvar = Int(ServiceResponse$Order$OrderItems$OrderItem.Quantity$);
+		checker = 1;
+	);
+);
+finalvar
+</trans>
