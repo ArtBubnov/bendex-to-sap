@@ -1,145 +1,154 @@
+import com.boomi.execution.ExecutionUtil
+import java.util.Properties
 import groovy.xml.*
 import groovy.json.JsonSlurper
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 
-def xmlFile = new File('payload3.xml')
-def inputXml = xmlFile.getText('UTF-8')
-def ServiceResponse = new XmlSlurper().parseText(inputXml)
-
-def writer = new StringWriter()
-def builder = new MarkupBuilder(writer)
-
-def get_currentOrderItem_function = ServiceResponse.Orders.Order.OrderItems.OrderItem.each { currentOrderItem -> }
-
-def prescrit_function = { ->
-    def kip_bendex_did = ServiceResponse.Orders.Order.Did
-    def kip_bendex_customer_number = ServiceResponse.Orders.Order.BACompany3
-    def kip_bendex_business_unit = ServiceResponse.Orders.Order.BACompany2
-    def kip_bendex_description = ServiceResponse.Orders.Order.Description.text()
-    
-	kip_bendex_description = kip_bendex_description.replace('/', '')
-	kip_bendex_description = kip_bendex_description.replace('\\', '')
-	kip_bendex_description = kip_bendex_description.replace('~', '')
-	kip_bendex_description = kip_bendex_description.replace('%', '')
-	kip_bendex_description = kip_bendex_description.replace('*', '')
-	kip_bendex_description = kip_bendex_description.replace(':', '')
-	kip_bendex_description = kip_bendex_description.replace('\r\n', '')
-    kip_bendex_description = kip_bendex_description.replace('\r', '')
-    kip_bendex_description = kip_bendex_description.replace('\n', '')
-    
-    def kip_bendex_baCompany = ServiceResponse.Orders.Order.BACompany
-    def kip_bendex_createdBy = ServiceResponse.Orders.Order.CreatedBy
-
-
-    def incoming_date = ServiceResponse.Orders.Order.CreatedOn.text()
+for (int x = 0; x < dataContext.getDataCount(); x++) {
+    InputStream is = dataContext.getStream(x)
+	Properties props = dataContext.getProperties(x)
 	
-
-	def cleaned = incoming_date.replace("T", " ").replace("Z", "")
 	
-
-	def inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-	def outputFormat = new SimpleDateFormat("yyyy-MM-dd")
+	def xmlFile = dataContext.getStream(x)
+	def inputXml = xmlFile.getText("UTF-8")
+	def ServiceResponse = new XmlSlurper().parseText(inputXml)
 	
-	def parsedDate = inputFormat.parse(cleaned)
-	def kip_bendex_creation_date = outputFormat.format(parsedDate)
-    
+	def writer = new StringWriter()
+	def builder = new MarkupBuilder(writer)
+
+    def get_currentOrderItem_function = ServiceResponse.Orders.Order.OrderItems.OrderItem.each { currentOrderItem -> }
+
+
+	def prescrit_function = { ->
+		def kip_bendex_did = ServiceResponse.Orders.Order.Did
+		def kip_bendex_customer_number = ServiceResponse.Orders.Order.BACompany3
+		def kip_bendex_business_unit = ServiceResponse.Orders.Order.BACompany2
+		def kip_bendex_description = ServiceResponse.Orders.Order.Description.text()
+		
+		kip_bendex_description = kip_bendex_description.replace('/', '')
+		kip_bendex_description = kip_bendex_description.replace('\\', '')
+		kip_bendex_description = kip_bendex_description.replace('~', '')
+		kip_bendex_description = kip_bendex_description.replace('%', '')
+		kip_bendex_description = kip_bendex_description.replace('*', '')
+		kip_bendex_description = kip_bendex_description.replace(':', '')
+		kip_bendex_description = kip_bendex_description.replace('\r\n', '')
+		kip_bendex_description = kip_bendex_description.replace('\r', '')
+		kip_bendex_description = kip_bendex_description.replace('\n', '')
+		
+		def kip_bendex_baCompany = ServiceResponse.Orders.Order.BACompany
+		def kip_bendex_createdBy = ServiceResponse.Orders.Order.CreatedBy
+
+
+		def incoming_date = ServiceResponse.Orders.Order.CreatedOn.text()
+		
+
+		def cleaned = incoming_date.replace("T", " ").replace("Z", "")
+		
+
+		def inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+		def outputFormat = new SimpleDateFormat("yyyy-MM-dd")
+		
+		def parsedDate = inputFormat.parse(cleaned)
+		def kip_bendex_creation_date = outputFormat.format(parsedDate)
+		
 
 
 
 
-    def kip_bendex_response_result = ServiceResponse.Result
-    def kip_bendex_response_details = ServiceResponse.Details
-    def kip_bendex_version = ServiceResponse.Version
-    def kip_jb_positionStringFlag = 'THEREISNOPOS888'
-    def kip_bendex_fast_track = 'N'
+		def kip_bendex_response_result = ServiceResponse.Result
+		def kip_bendex_response_details = ServiceResponse.Details
+		def kip_bendex_version = ServiceResponse.Version
+		def kip_jb_positionStringFlag = 'THEREISNOPOS888'
+		def kip_bendex_fast_track = 'N'
 
 
-    return[
-        kip_bendex_did: kip_bendex_did,
-        kip_bendex_customer_number: kip_bendex_customer_number,
-        kip_bendex_business_unit: kip_bendex_business_unit,
-        kip_bendex_description: kip_bendex_description,
-        kip_bendex_baCompany: kip_bendex_baCompany,
-        kip_bendex_createdBy: kip_bendex_createdBy,
-        kip_bendex_creation_date: kip_bendex_creation_date,
-        kip_bendex_response_result: kip_bendex_response_result,
-        kip_bendex_response_details: kip_bendex_response_details,
-        kip_bendex_version: kip_bendex_version,
-        kip_jb_positionStringFlag: kip_jb_positionStringFlag,
-        kip_bendex_fast_track: kip_bendex_fast_track
-    ]
+		return[
+			kip_bendex_did: kip_bendex_did,
+			kip_bendex_customer_number: kip_bendex_customer_number,
+			kip_bendex_business_unit: kip_bendex_business_unit,
+			kip_bendex_description: kip_bendex_description,
+			kip_bendex_baCompany: kip_bendex_baCompany,
+			kip_bendex_createdBy: kip_bendex_createdBy,
+			kip_bendex_creation_date: kip_bendex_creation_date,
+			kip_bendex_response_result: kip_bendex_response_result,
+			kip_bendex_response_details: kip_bendex_response_details,
+			kip_bendex_version: kip_bendex_version,
+			kip_jb_positionStringFlag: kip_jb_positionStringFlag,
+			kip_bendex_fast_track: kip_bendex_fast_track
+		]
 
-}
+	}
 
-
-
-
-def prescript = prescrit_function()
+	def prescript = prescrit_function()
 
 
 
 
-def dicts_maker_function = { ->
-
-    def prj_SapCodes_array_JSON_File = new File('prj_SapCodes_array.json').text
-	def prj_SapCodes_array = new JsonSlurper().parseText(prj_SapCodes_array_JSON_File)
-
-	def prj_coil_metal_ext_array_JSON_File = new File('prj_coil_metal_ext_array.json').text
-	def prj_coil_metal_ext_array = new JsonSlurper().parseText(prj_coil_metal_ext_array_JSON_File)
-
-	def prj_coil_finish_ext_array_JSON_File = new File('prj_coil_finish_ext_array.json').text
-	def prj_coil_finish_ext_array = new JsonSlurper().parseText(prj_coil_finish_ext_array_JSON_File)
-
-	def prj_coil_guige_ext_array_JSON_File = new File('prj_coil_guige_ext_array.json').text
-	def prj_coil_guige_ext_array = new JsonSlurper().parseText(prj_coil_guige_ext_array_JSON_File)
-	
-	def prj_coil_colour_ext_array_JSON_File = new File('prj_coil_colour_ext_array.json').text
-	def prj_coil_colour_ext_array = new JsonSlurper().parseText(prj_coil_colour_ext_array_JSON_File)
-
-	def coverWidth2Dict_JSON_File = new File('coverWidth2Dict.json').text
-	def coverWidth2Dict = new JsonSlurper().parseText(coverWidth2Dict_JSON_File)
-
-	def front_colour_colour_JSON_File = new File('front_colour.colour.json').text
-	def front_colour_colour = new JsonSlurper().parseText(front_colour_colour_JSON_File)
-
-	def front_colour_type_JSON_File = new File('front_colour.type.json').text
-	def front_colour_type = new JsonSlurper().parseText(front_colour_type_JSON_File)
-
-	def front_colour_colour_IE_array_JSON_File = new File('front_colour.colour_IE.json').text
-	def front_colour_colour_IE_array = new JsonSlurper().parseText(front_colour_colour_IE_array_JSON_File)
-
-	def front_colour_type_IE_array_JSON_File = new File('front_colour.type_IE.json').text
-	def front_colour_type_IE = new JsonSlurper().parseText(front_colour_type_IE_array_JSON_File)
-
-	def kipBendexPrjArrayDET = new File('kipBendexPrjArrayDET.txt').text
-	def kipBendexArrayDET = kipBendexPrjArrayDET.split(',').collect { it.trim() }
-
-	def kipBendexPrjArrayCNF = new File('kipBendexPrjArrayCNF.txt').text
-	def kipBendexArrayCNF = kipBendexPrjArrayCNF.split(',').collect { it.trim() }
+    def dicts_maker_function = { ->
 
 
+        def prj_SapCodes_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_SapCodes_array")
+        def prj_SapCodes_array = new JsonSlurper().parseText(prj_SapCodes_array_JSON_File)
 
-    return [
-    prj_SapCodes_array:prj_SapCodes_array, 
-    prj_coil_metal_ext_array:prj_coil_metal_ext_array,
-    prj_coil_finish_ext_array:prj_coil_finish_ext_array,
-    prj_coil_guige_ext_array:prj_coil_guige_ext_array,
-    prj_coil_colour_ext_array:prj_coil_colour_ext_array,
-    coverWidth2Dict:coverWidth2Dict,
-    front_colour_colour:front_colour_colour,
-    front_colour_type:front_colour_type,
-    front_colour_colour_IE_array:front_colour_colour_IE_array,
-    front_colour_type_IE:front_colour_type_IE,
-    kipBendexArrayDET:kipBendexArrayDET,
-    kipBendexArrayCNF:kipBendexArrayCNF
-    ]
+		def prj_SapCodes_FL_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_SapCodes_FL_array")
+        def prj_SapCodes_FL_array = new JsonSlurper().parseText(prj_SapCodes_FL_array_JSON_File)
 
- 
-}
+        def prj_coil_metal_ext_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_coil_metal_ext_array")
+        def prj_coil_metal_ext_array = new JsonSlurper().parseText(prj_coil_metal_ext_array_JSON_File)
 
-def dicts_list = dicts_maker_function()
+        def prj_coil_finish_ext_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_coil_finish_ext_array")
+        def prj_coil_finish_ext_array = new JsonSlurper().parseText(prj_coil_finish_ext_array_JSON_File)
+
+        def prj_coil_guige_ext_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_coil_guige_ext_array")
+        def prj_coil_guige_ext_array = new JsonSlurper().parseText(prj_coil_guige_ext_array_JSON_File)
+        
+        def prj_coil_colour_ext_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_coil_colour_ext_array")
+        def prj_coil_colour_ext_array = new JsonSlurper().parseText(prj_coil_colour_ext_array_JSON_File)
+
+        def coverWidth2Dict_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_coverWidth2Dict")
+        def coverWidth2Dict = new JsonSlurper().parseText(coverWidth2Dict_JSON_File)
+
+        def front_colour_colour_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_front_colour_colour_array")
+        def front_colour_colour = new JsonSlurper().parseText(front_colour_colour_JSON_File)
+
+        def front_colour_type_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_front_colour_type")
+        def front_colour_type = new JsonSlurper().parseText(front_colour_type_JSON_File)
+
+        def front_colour_colour_IE_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_front_colour_colour_IE")
+        def front_colour_colour_IE_array = new JsonSlurper().parseText(front_colour_colour_IE_array_JSON_File)
+
+        def front_colour_type_IE_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_front_colour_type_IE")
+        def front_colour_type_IE = new JsonSlurper().parseText(front_colour_type_IE_array_JSON_File)
+
+        def kipBendexPrjArrayDET = ExecutionUtil.getDynamicProcessProperty("dpp_kipBendexPrjArrayDET")
+        def kipBendexArrayDET = kipBendexPrjArrayDET.split(',').collect { it.trim() }
+
+        def kipBendexPrjArrayCNF = ExecutionUtil.getDynamicProcessProperty("dpp_kipBendexPrjArrayCNF")
+        def kipBendexArrayCNF = kipBendexPrjArrayCNF.split(',').collect { it.trim() }
+
+
+
+        return [
+        prj_SapCodes_array:prj_SapCodes_array, 
+        prj_coil_metal_ext_array:prj_coil_metal_ext_array,
+        prj_coil_finish_ext_array:prj_coil_finish_ext_array,
+        prj_coil_guige_ext_array:prj_coil_guige_ext_array,
+        prj_coil_colour_ext_array:prj_coil_colour_ext_array,
+        coverWidth2Dict:coverWidth2Dict,
+        front_colour_colour:front_colour_colour,
+        front_colour_type:front_colour_type,
+        front_colour_colour_IE_array:front_colour_colour_IE_array,
+        front_colour_type_IE:front_colour_type_IE,
+        kipBendexArrayDET:kipBendexArrayDET,
+        kipBendexArrayCNF:kipBendexArrayCNF,
+		prj_SapCodes_FL_array: prj_SapCodes_FL_array
+        ]
+    }
+
+	def dicts_list = dicts_maker_function()
+
 
 
 
@@ -474,7 +483,6 @@ def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
 		def countItems_TemplateParameters = currentOrderItem.TemplateParameters.Item.size()
 		def items_TemplateParameters = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' }
 
-
 		
 		def kipBendexDistributionListValue = ""
 		def sapcode = ""
@@ -485,30 +493,42 @@ def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
 			
 
 		if(countItems_TemplateParameters > 1 | countItems_CustomProperties > 1){
+            
 
 			kipBendexDistributionListValue = currentOrderItem.TemplateParameters.'**'.find { it.name() == 'Item' && it.@name == 'DISTRIBUTION LIST' }?.text()
-			
+
+
+
 			if(kipBendexDistributionListValue == null){
+                
 				kipBendexDistributionListValue = currentOrderItem.CustomProperties.PropertiesValues.'**'.find { it.name() == 'Item' && it.@name == 'DISTRIBUTION LIST' }?.text()
 			}
 
 
 			if(kipBendexDistributionListValue == "Facades"){
+                
 				nodeValue = 'FacadesTrue'
 			}
 
 
 			if(kipBendexDistributionListValue != "Facades"){
+                
 				sapcode   = currentOrderItem.CustomProperties.PropertiesValues.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
 				nodeValue = currentOrderItem.CustomProperties.PropertiesValues.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
-
+                
 				if(nodeValue == null){
 					sapcode   = currentOrderItem.TemplateParameters.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
 					nodeValue = currentOrderItem.TemplateParameters.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
-				}
+				} else {
+                    if(nodeValue.length() == 0){
+                        sapcode   = currentOrderItem.TemplateParameters.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
+					    nodeValue = currentOrderItem.TemplateParameters.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
+                    }
+                }
 			}
 
 		} else {
+            
 			def kipBendexDecisionTppvExist = false;
 			def kipBendexIfItemIsShipping = currentOrderItem.ShoppingItemType
 
@@ -522,6 +542,7 @@ def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
 				if(currentOrderItem.Profile.@kind == "profile"){
 
 					if(currentOrderItem.Profile.@length == 150){
+                        
 						kipJbBSChecker = 1
 						def profileFromPayloadValue = currentOrderItem.Profile.@flangeSum		
 						def profileFromPayloadValue_to_number = profileFromPayloadValue.toDouble()
@@ -546,9 +567,16 @@ def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
 				
 
 				if(currentOrderItem.Profile.@kind == "profile" && codes_checker == 0 && bends < 10){
+                    
 					if(currentOrderItem.Profile.@length != 150){
 						
-						def profileFromPayloadValue = currentOrderItem.Profile.@flangeSum		
+						def profileFromPayloadValue = currentOrderItem.Profile.@flangeSum.text()
+                        
+
+                        if(profileFromPayloadValue == null | profileFromPayloadValue.length() == 0){
+                            profileFromPayloadValue = 0
+                        }	
+
 						def profileFromPayloadValue_to_number = profileFromPayloadValue.toDouble()
 						def widthFL = Math.round(profileFromPayloadValue_to_number)
 
@@ -593,14 +621,14 @@ def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
 		if(nodeValue == null){
 			nodeValue = ""
 		}
-       
-
+        
+        
 	//}
     return nodeValue
 }
 
 def nodeValue = material_code__function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, dicts_list.prj_SapCodes_array, get_currentOrderItem_function)
-
+println("Node value is --- " + nodeValue )
 
 
 
@@ -630,7 +658,7 @@ def order_qty_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parame
             def countItems_TemplateParameters = currentOrderItem.TemplateParameters.Item.size()
             def items_TemplateParameters = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' }
 
-        
+          	
 
             if(isCustomPropertiesPresented != 0){
                 if(countItems_CustomProperties == 1 && items_CustomProperties[0]?.@name?.text() == "mark_ID"){
@@ -670,38 +698,40 @@ def order_qty_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parame
                     
 
             } else {
-                println(countItems_TemplateParameters)
                 
-                while(kip_jb_dictionary_trigger != 1 && i < countItems_TemplateParameters){
-                    if(items_TemplateParameters[i]?.text().length() > 0 && items_TemplateParameters[i] != null){
+                if(countItems_TemplateParameters != 0){
+                    while(kip_jb_dictionary_trigger != 1 && i < countItems_TemplateParameters){
 
-                        if(items_TemplateParameters[i]?.@name?.text().take(3) != "BX_"){
-                            if(items_TemplateParameters[i]?.@name?.text() in kipBendexArrayDET ){
-                                kip_jb_string_of_nodes_checker += "true,"
-                            } else {
-                                kip_jb_string_of_nodes_checker = "1"
-                            }
+                        if(items_TemplateParameters[i]?.text().length() > 0 && items_TemplateParameters[i] != null){
 
-                            if(items_TemplateParameters[i]?.@name?.text() in kipBendexArrayCNF ){
-                                kip_jb_string_of_nodes_checker += "true,"
-                            } else {
-                                kip_jb_string_of_nodes_checker = "1"
+                            if(items_TemplateParameters[i]?.@name?.text().take(3) != "BX_"){
+                                if(items_TemplateParameters[i]?.@name?.text() in kipBendexArrayDET ){
+                                    kip_jb_string_of_nodes_checker += "true,"
+                                } else {
+                                    kip_jb_string_of_nodes_checker = "1"
+                                }
+
+                                if(items_TemplateParameters[i]?.@name?.text() in kipBendexArrayCNF ){
+                                    kip_jb_string_of_nodes_checker += "true,"
+                                } else {
+                                    kip_jb_string_of_nodes_checker = "1"
+                                }
                             }
                         }
-                    }
-                    i++
-                } 
+                        i++
+                    } 
 
 
-                if(kip_jb_string_of_nodes_checker.length() == 0){
-                    if(currentOrderItem.ShoppingItemType.text().contains("Shipping")){
-                        println("Shipping TRUE ")
-                        ORDER_QTY = currentOrderItem.Quantity.text()
+                    if(kip_jb_string_of_nodes_checker.length() == 0){
+                        if(currentOrderItem.ShoppingItemType.text().contains("Shipping")){
+                            println("Shipping TRUE ")
+                            ORDER_QTY = currentOrderItem.Quantity.text()
+                        } else {
+                            ORDER_QTY = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0].text()
+                        }    
                     } else {
                         ORDER_QTY = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0].text()
-                    }    
-                } else {
-                    ORDER_QTY = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0].text()
+                    }
                 }
                 
                 
@@ -1753,10 +1783,10 @@ def dummy_detailing_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_
 
 
 def dummy_detailing_function_result = dummy_detailing_function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, nodeValue)
-println("************* HELPER *************")
-println("dummy_detailing_function_result ---- all_nodes_name_array --- " + dummy_detailing_function_result.all_nodes_name_array)
-println("dummy_detailing_function_result ---- all_nodes_value_array --- " + dummy_detailing_function_result.all_nodes_value_array)
-println("************* HELPER *************")
+//println("************* HELPER *************")
+//println("dummy_detailing_function_result ---- all_nodes_name_array --- " + dummy_detailing_function_result.all_nodes_name_array)
+//println("dummy_detailing_function_result ---- all_nodes_value_array --- " + dummy_detailing_function_result.all_nodes_value_array)
+//println("************* HELPER *************")
 
 
 def z = 0
@@ -1871,6 +1901,7 @@ def dummy_position_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
                         }
 
                         if(items_TemplateParameters[i]?.@name?.text() in kipBendexArrayCNF){
+
                             currentCreateNodeName_array << items_TemplateParameters[i]?.@name?.text()
                             currentCreateNodeValue_array << items_TemplateParameters[i]?.text()
                             kip_jb_dictionary_trigger = 1
@@ -1929,7 +1960,7 @@ def dummy_position_function_result = dummy_position_function(dicts_list.kipBende
 
 
 def y = 0
-//dummy_position_NODE_MAKER_function(delegate, dummy_position_function_result.currentCreateNodeName_array, dummy_position_function_result.currentCreateNodeValue_array)
+
 def dummy_position_NODE_MAKER_function = { dummy_position_NODE_MAKER_function_builder, node_name_parameter, node_value_parameter ->
     def node_maker_names = node_name_parameter
     def node_maker_values = node_value_parameter
@@ -1940,16 +1971,22 @@ def dummy_position_NODE_MAKER_function = { dummy_position_NODE_MAKER_function_bu
     y = y + 1
 
 
-        if(current_node_maker_name != null & current_node_maker_name != "null" & current_node_maker_value != null & current_node_maker_value != "null"){
+        if(current_node_maker_name != null & current_node_maker_name != "null" & current_node_maker_name.size() != 0 & current_node_maker_value != null & current_node_maker_value != "null" & current_node_maker_value.size() != 0){
             dummy_position_NODE_MAKER_function_builder."${current_node_maker_name}"(current_node_maker_value)
+ 
+   
     }
+
+
+
+    
 }
 
 
-
    
-	builder.ORDER_CREATE {
+	 builder.ORDER_CREATE {
 		"Oid"(ServiceResponse.Orders.Order.Oid)
+        
         HEADER{
 			CUSTOMER{
 				"PO_NUM"(ServiceResponse.Orders.Order.Description)//tested
@@ -1987,29 +2024,34 @@ def dummy_position_NODE_MAKER_function = { dummy_position_NODE_MAKER_function_bu
 		}
         ServiceResponse.Orders.Order.OrderItems.OrderItem.each { currentOrderItem ->
             MATERIAL_ITEM{
-                // "DUMMY_SHIP"("NODE VALUE")
+                ///// "DUMMY_SHIP"("NODE VALUE")
                 dummy_ship_function(delegate, currentOrderItem)
-                "MATERIAL_CODE"(material_code__function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, dicts_list.prj_SapCodes_array, currentOrderItem))  	
+                
+                "MATERIAL_CODE"(material_code__function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, dicts_list.prj_SapCodes_array, currentOrderItem))
+                
                 "ORDER_QTY"(order_qty_function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, nodeValue, currentOrderItem))
                 "PLANT"(plant_function(currentOrderItem))
                 "CONDITION"()
                 "PRICE"(currentOrderItem.Price)
                 "DISCOUNT"(currentOrderItem.Discount)
-                //"DUMMY_MATERIAL_ITEM"(NODE VALUE)
+                ////"DUMMY_MATERIAL_ITEM"(NODE VALUE)
                 dummy_matterial_item_NODE_MAKER_function(delegate, dummy_matterial_item_function_result.all_nodes_name_array, dummy_matterial_item_function_result.all_nodes_value_array)
                 DETAILING{
-                    //"DUMMY_DETAILING"("NODE VALUE")
+                    // //"DUMMY_DETAILING"("NODE VALUE")
                     dummy_detailing_NODE_MAKER_function(delegate, dummy_detailing_function_result.all_nodes_name_array, dummy_detailing_function_result.all_nodes_value_array)
-                    //"DUMMY_POSITION"("NODE VALUE")
+                    ////"DUMMY_POSITION"("NODE VALUE")
                     dummy_position_NODE_MAKER_function(delegate, dummy_position_function_result.currentCreateNodeName_array, dummy_position_function_result.currentCreateNodeValue_array)
                     
                 }
             }
         }
 	}
-
-    def resultXml = writer.toString()
-    def orderCustomerOid = ServiceResponse.Orders.Order.Customer.@oid.text()
+	
+	
+	
+	def resultXml = writer.toString()
+	
+	def orderCustomerOid = ServiceResponse.Orders.Order.Customer.@oid.text()
     def orderCustomerOid_flag = 0
     if(orderCustomerOid == "922e2c80-33aa-4c1d-b87a-9bc74649ee55" | orderCustomerOid == "2f5158e6-d64a-4de5-aeca-e4df45a7c50c"){
         //orderCustomerOid_flag true
@@ -2018,8 +2060,8 @@ def dummy_position_NODE_MAKER_function = { dummy_position_NODE_MAKER_function_bu
         //orderCustomerOid_flag false
         orderCustomerOid_flag = 0
     }
-    //println(resultXml)
-
-    
-
-    
+	props.setProperty("document.dynamic.userdefined.orderCustomerOid_flag", orderCustomerOid_flag?.toString())
+	
+	dataContext.storeStream(new ByteArrayInputStream(resultXml.getBytes("UTF-8")), props)
+	
+}

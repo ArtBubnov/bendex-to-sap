@@ -1,8 +1,9 @@
-import groovy.xml.*
+import groovy.xml.* 
 import groovy.json.JsonSlurper
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.text.SimpleDateFormat
+
 
 def xmlFile = new File('payload3.xml')
 def inputXml = xmlFile.getText('UTF-8')
@@ -12,143 +13,162 @@ def writer = new StringWriter()
 def builder = new MarkupBuilder(writer)
 
 def get_currentOrderItem_function = ServiceResponse.Orders.Order.OrderItems.OrderItem.each { currentOrderItem -> }
+    def nodeValue_test_arr_a = []
+    def nodeValue_test_arr_b = []
 
-def prescrit_function = { ->
-    def kip_bendex_did = ServiceResponse.Orders.Order.Did
-    def kip_bendex_customer_number = ServiceResponse.Orders.Order.BACompany3
-    def kip_bendex_business_unit = ServiceResponse.Orders.Order.BACompany2
-    def kip_bendex_description = ServiceResponse.Orders.Order.Description.text()
-    
-	kip_bendex_description = kip_bendex_description.replace('/', '')
-	kip_bendex_description = kip_bendex_description.replace('\\', '')
-	kip_bendex_description = kip_bendex_description.replace('~', '')
-	kip_bendex_description = kip_bendex_description.replace('%', '')
-	kip_bendex_description = kip_bendex_description.replace('*', '')
-	kip_bendex_description = kip_bendex_description.replace(':', '')
-	kip_bendex_description = kip_bendex_description.replace('\r\n', '')
-    kip_bendex_description = kip_bendex_description.replace('\r', '')
-    kip_bendex_description = kip_bendex_description.replace('\n', '')
-    
-    def kip_bendex_baCompany = ServiceResponse.Orders.Order.BACompany
-    def kip_bendex_createdBy = ServiceResponse.Orders.Order.CreatedBy
-
-
-    def incoming_date = ServiceResponse.Orders.Order.CreatedOn.text()
-	
-
-	def cleaned = incoming_date.replace("T", " ").replace("Z", "")
-	
-
-	def inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-	def outputFormat = new SimpleDateFormat("yyyy-MM-dd")
-	
-	def parsedDate = inputFormat.parse(cleaned)
-	def kip_bendex_creation_date = outputFormat.format(parsedDate)
-    
+	def prescrit_function = { ->
+        println("__1__-------- prescrit_function debuger START --------__1__")
+		def kip_bendex_did = ServiceResponse.Orders.Order.Did
+		def kip_bendex_customer_number = ServiceResponse.Orders.Order.BACompany3
+		def kip_bendex_business_unit = ServiceResponse.Orders.Order.BACompany2
+		def kip_bendex_description = ServiceResponse.Orders.Order.Description.text()
+		
+		kip_bendex_description = kip_bendex_description.replace('/', '')
+		kip_bendex_description = kip_bendex_description.replace('\\', '')
+		kip_bendex_description = kip_bendex_description.replace('~', '')
+		kip_bendex_description = kip_bendex_description.replace('%', '')
+		kip_bendex_description = kip_bendex_description.replace('*', '')
+		kip_bendex_description = kip_bendex_description.replace(':', '')
+		kip_bendex_description = kip_bendex_description.replace('\r\n', '')
+		kip_bendex_description = kip_bendex_description.replace('\r', '')
+		kip_bendex_description = kip_bendex_description.replace('\n', '')
+		
+		def kip_bendex_baCompany = ServiceResponse.Orders.Order.BACompany
+		def kip_bendex_createdBy = ServiceResponse.Orders.Order.CreatedBy
 
 
+		def incoming_date = ServiceResponse.Orders.Order.CreatedOn.text()
 
+		def cleaned = incoming_date.replace("T", " ").replace("Z", "")
+		
 
-    def kip_bendex_response_result = ServiceResponse.Result
-    def kip_bendex_response_details = ServiceResponse.Details
-    def kip_bendex_version = ServiceResponse.Version
-    def kip_jb_positionStringFlag = 'THEREISNOPOS888'
-    def kip_bendex_fast_track = 'N'
-
-
-    return[
-        kip_bendex_did: kip_bendex_did,
-        kip_bendex_customer_number: kip_bendex_customer_number,
-        kip_bendex_business_unit: kip_bendex_business_unit,
-        kip_bendex_description: kip_bendex_description,
-        kip_bendex_baCompany: kip_bendex_baCompany,
-        kip_bendex_createdBy: kip_bendex_createdBy,
-        kip_bendex_creation_date: kip_bendex_creation_date,
-        kip_bendex_response_result: kip_bendex_response_result,
-        kip_bendex_response_details: kip_bendex_response_details,
-        kip_bendex_version: kip_bendex_version,
-        kip_jb_positionStringFlag: kip_jb_positionStringFlag,
-        kip_bendex_fast_track: kip_bendex_fast_track
-    ]
-
-}
+		def inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+		def outputFormat = new SimpleDateFormat("yyyy-MM-dd")
+		
+		def parsedDate = inputFormat.parse(cleaned)
+		def kip_bendex_creation_date = outputFormat.format(parsedDate)
+		
 
 
 
 
-def prescript = prescrit_function()
+		def kip_bendex_response_result = ServiceResponse.Result
+		def kip_bendex_response_details = ServiceResponse.Details
+		def kip_bendex_version = ServiceResponse.Version
+		def kip_jb_positionStringFlag = 'THEREISNOPOS888'
+		def kip_bendex_fast_track = 'N'
+        //println "Working dir: " + new File(".").absolutePath
+        println("prescrit_function execution is finished")
+        println("RETURN:")
+        println("kip_bendex_did --- " + kip_bendex_did)
+        println(" kip_bendex_customer_number--- " + kip_bendex_customer_number)
+        println(" kip_bendex_business_unit--- " + kip_bendex_business_unit)
+        println(" kip_bendex_description--- " + kip_bendex_description)
+        println(" kip_bendex_baCompany--- " + kip_bendex_baCompany)
+        println(" kip_bendex_createdBy--- " + kip_bendex_createdBy)
+
+
+
+        println("\r\n!__1__!-------- prescrit_function debuger END --------!__1__!")
+		return[
+			kip_bendex_did: kip_bendex_did,
+			kip_bendex_customer_number: kip_bendex_customer_number,
+			kip_bendex_business_unit: kip_bendex_business_unit,
+			kip_bendex_description: kip_bendex_description,
+			kip_bendex_baCompany: kip_bendex_baCompany,
+			kip_bendex_createdBy: kip_bendex_createdBy,
+			kip_bendex_creation_date: kip_bendex_creation_date,
+			kip_bendex_response_result: kip_bendex_response_result,
+			kip_bendex_response_details: kip_bendex_response_details,
+			kip_bendex_version: kip_bendex_version,
+			kip_jb_positionStringFlag: kip_jb_positionStringFlag,
+			kip_bendex_fast_track: kip_bendex_fast_track
+		]
+
+	}
+
+	def prescript = prescrit_function()
 
 
 
 
-def dicts_maker_function = { ->
+    def dicts_maker_function = { ->
+        println("\r\n\r\n\r\n__2__-------- dicts_maker_function debuger START --------__2__")
 
-    def prj_SapCodes_array_JSON_File = new File('prj_SapCodes_array.json').text
-	def prj_SapCodes_array = new JsonSlurper().parseText(prj_SapCodes_array_JSON_File)
+        def prj_SapCodes_array_JSON_File = new File('prj_SapCodes_array.json').text
+        def prj_SapCodes_array = new JsonSlurper().parseText(prj_SapCodes_array_JSON_File)
 
-	def prj_coil_metal_ext_array_JSON_File = new File('prj_coil_metal_ext_array.json').text
-	def prj_coil_metal_ext_array = new JsonSlurper().parseText(prj_coil_metal_ext_array_JSON_File)
+        def prj_SapCodesArray_FL_array = new File('prj_SapCodes_FL_array.json').text
+        def prj_SapCodes_FL_array = new JsonSlurper().parseText(prj_SapCodesArray_FL_array)
 
-	def prj_coil_finish_ext_array_JSON_File = new File('prj_coil_finish_ext_array.json').text
-	def prj_coil_finish_ext_array = new JsonSlurper().parseText(prj_coil_finish_ext_array_JSON_File)
+        def prj_coil_metal_ext_array_JSON_File = new File('prj_coil_metal_ext_array.json').text
+        def prj_coil_metal_ext_array = new JsonSlurper().parseText(prj_coil_metal_ext_array_JSON_File)
 
-	def prj_coil_guige_ext_array_JSON_File = new File('prj_coil_guige_ext_array.json').text
-	def prj_coil_guige_ext_array = new JsonSlurper().parseText(prj_coil_guige_ext_array_JSON_File)
-	
-	def prj_coil_colour_ext_array_JSON_File = new File('prj_coil_colour_ext_array.json').text
-	def prj_coil_colour_ext_array = new JsonSlurper().parseText(prj_coil_colour_ext_array_JSON_File)
+        def prj_coil_finish_ext_array_JSON_File = new File('prj_coil_finish_ext_array.json').text
+        def prj_coil_finish_ext_array = new JsonSlurper().parseText(prj_coil_finish_ext_array_JSON_File)
 
-	def coverWidth2Dict_JSON_File = new File('coverWidth2Dict.json').text
-	def coverWidth2Dict = new JsonSlurper().parseText(coverWidth2Dict_JSON_File)
+        def prj_coil_guige_ext_array_JSON_File = new File('prj_coil_guige_ext_array.json').text
+        def prj_coil_guige_ext_array = new JsonSlurper().parseText(prj_coil_guige_ext_array_JSON_File)
+        
+        def prj_coil_colour_ext_array_JSON_File = new File('prj_coil_colour_ext_array.json').text
+        def prj_coil_colour_ext_array = new JsonSlurper().parseText(prj_coil_colour_ext_array_JSON_File)
 
-	def front_colour_colour_JSON_File = new File('front_colour.colour.json').text
-	def front_colour_colour = new JsonSlurper().parseText(front_colour_colour_JSON_File)
+        def coverWidth2Dict_JSON_File = new File('coverWidth2Dict.json').text
+        def coverWidth2Dict = new JsonSlurper().parseText(coverWidth2Dict_JSON_File)
 
-	def front_colour_type_JSON_File = new File('front_colour.type.json').text
-	def front_colour_type = new JsonSlurper().parseText(front_colour_type_JSON_File)
+        def front_colour_colour_JSON_File = new File('front_colour.colour.json').text
+        def front_colour_colour = new JsonSlurper().parseText(front_colour_colour_JSON_File)
 
-	def front_colour_colour_IE_array_JSON_File = new File('front_colour.colour_IE.json').text
-	def front_colour_colour_IE_array = new JsonSlurper().parseText(front_colour_colour_IE_array_JSON_File)
+        def front_colour_type_JSON_File = new File('front_colour.type.json').text
+        def front_colour_type = new JsonSlurper().parseText(front_colour_type_JSON_File)
 
-	def front_colour_type_IE_array_JSON_File = new File('front_colour.type_IE.json').text
-	def front_colour_type_IE = new JsonSlurper().parseText(front_colour_type_IE_array_JSON_File)
+        def front_colour_colour_IE_array_JSON_File = new File('front_colour.colour_IE.json').text
+        def front_colour_colour_IE_array = new JsonSlurper().parseText(front_colour_colour_IE_array_JSON_File)
 
-	def kipBendexPrjArrayDET = new File('kipBendexPrjArrayDET.txt').text
-	def kipBendexArrayDET = kipBendexPrjArrayDET.split(',').collect { it.trim() }
+        def front_colour_type_IE_array_JSON_File = new File('front_colour.type_IE.json').text
+        def front_colour_type_IE = new JsonSlurper().parseText(front_colour_type_IE_array_JSON_File)
 
-	def kipBendexPrjArrayCNF = new File('kipBendexPrjArrayCNF.txt').text
-	def kipBendexArrayCNF = kipBendexPrjArrayCNF.split(',').collect { it.trim() }
+        def kipBendexPrjArrayDET = new File('kipBendexPrjArrayDET.txt').text
+        def kipBendexArrayDET = kipBendexPrjArrayDET.split(',').collect { it.trim() }
+
+        def kipBendexPrjArrayCNF = new File('kipBendexPrjArrayCNF.txt').text
+        def kipBendexArrayCNF = kipBendexPrjArrayCNF.split(',').collect { it.trim() }
+
+        //def prj_SapCodesArray_FL_array = new File('kipBendexPrjArrayCNF.txt').text
+        //def prj_SapCodesArray_FL_array = new File('prj_SapCodes_FL_array.json').text
+        //def prj_SapCodes_FL_array = prj_SapCodesArray_FL_array.split(',').collect { it.trim() }
+        //println(prj_SapCodes_FL_array)
+        println("__2__-------- dicts_maker_function debuger END --------__2__")
+ 
+        return [
+        prj_SapCodes_array:prj_SapCodes_array, 
+        prj_coil_metal_ext_array:prj_coil_metal_ext_array,
+        prj_coil_finish_ext_array:prj_coil_finish_ext_array,
+        prj_coil_guige_ext_array:prj_coil_guige_ext_array,
+        prj_coil_colour_ext_array:prj_coil_colour_ext_array,
+        coverWidth2Dict:coverWidth2Dict,
+        front_colour_colour:front_colour_colour,
+        front_colour_type:front_colour_type,
+        front_colour_colour_IE_array:front_colour_colour_IE_array,
+        front_colour_type_IE:front_colour_type_IE,
+        kipBendexArrayDET:kipBendexArrayDET,
+        kipBendexArrayCNF:kipBendexArrayCNF,
+		prj_SapCodes_FL_array: prj_SapCodes_FL_array
+        ]
+    }
+
+	def dicts_list = dicts_maker_function()
 
 
 
-    return [
-    prj_SapCodes_array:prj_SapCodes_array, 
-    prj_coil_metal_ext_array:prj_coil_metal_ext_array,
-    prj_coil_finish_ext_array:prj_coil_finish_ext_array,
-    prj_coil_guige_ext_array:prj_coil_guige_ext_array,
-    prj_coil_colour_ext_array:prj_coil_colour_ext_array,
-    coverWidth2Dict:coverWidth2Dict,
-    front_colour_colour:front_colour_colour,
-    front_colour_type:front_colour_type,
-    front_colour_colour_IE_array:front_colour_colour_IE_array,
-    front_colour_type_IE:front_colour_type_IE,
-    kipBendexArrayDET:kipBendexArrayDET,
-    kipBendexArrayCNF:kipBendexArrayCNF
-    ]
 
  
-}
-
-def dicts_list = dicts_maker_function()
-
-
-
-
 def del_date_function = { ->
+    println("\r\n\r\n\r\n__3__-------- del_date_function debuger START --------__3__")
     def incomingDate = ServiceResponse.Orders.Order.DeliveryDate.text()
 	def date = LocalDateTime.parse(incomingDate)
 	def formatedDate = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"))	
-
+    println("__3__-------- del_date_function debuger END --------__3__")
     return formatedDate
 }
 
@@ -156,6 +176,7 @@ def del_date_function = { ->
 
 
 def order_type_function = { currentOrderItem ->
+    println("\r\n\r\n\r\n__4__-------- order_type_function debuger START --------__4__")
     def orderType = ""
 
     // ServiceResponse.Orders.Order.OrderItems.OrderItem.each { currentOrderItem ->
@@ -215,6 +236,7 @@ def order_type_function = { currentOrderItem ->
         }
 
         orderType = orderType_value
+        println("__4__-------- order_type_function debuger END --------__4__")
     // }
 
     return orderType
@@ -224,6 +246,7 @@ def order_type_function = { currentOrderItem ->
 
 
 def sales_org_function = { currentOrderItem ->
+    println("\r\n\r\n\r\n__5__-------- sales_org_function debuger START --------__5__")
     def salesOrg = ""
     // ServiceResponse.Orders.Order.OrderItems.OrderItem.each { currentOrderItem ->
         def isCustomPropertiesPresented = currentOrderItem.CustomProperties.PropertiesValues.Item.size()
@@ -284,7 +307,7 @@ def sales_org_function = { currentOrderItem ->
             }
         }
         salesOrg = sales_org_value
-
+        println("__5__-------- sales_org_function debuger END --------__5__")
     // }
 
     return salesOrg
@@ -294,6 +317,7 @@ def sales_org_function = { currentOrderItem ->
 
 
 def distribution_channel_function = { currentOrderItem ->
+    println("\r\n\r\n\r\n__6__-------- distribution_channel_function debuger START --------__6__")
     def distribution_channel_value = ""
 
 
@@ -359,7 +383,7 @@ def distribution_channel_function = { currentOrderItem ->
 			}
 		}
 		distribution_channel_value = distribution_channel
-
+        println("__6__-------- distribution_channel_function debuger END --------__6__")
 		
 	// }
     return distribution_channel_value
@@ -368,7 +392,8 @@ def distribution_channel_function = { currentOrderItem ->
 
 
 
-def division_function = { currentOrderItem -> 
+def division_function = { currentOrderItem ->
+    println("\r\n\r\n\r\n__7__-------- division_function debuger START --------__7__")
     def division_value = ""
 
     // ServiceResponse.Orders.Order.OrderItems.OrderItem.each { currentOrderItem ->
@@ -430,6 +455,7 @@ def division_function = { currentOrderItem ->
             }
         }
         division_value = division
+        println("__7__-------- division_function debuger END --------__7__")
     // }
 
     return division_value
@@ -440,6 +466,7 @@ def division_function = { currentOrderItem ->
 // due to here we need to pass the node value and create the node it self insted original node dummy_ship
 // the xml builder it self should be passed into the function as dummy_ship_function_builder paameter
 def dummy_ship_function = { dummy_ship_function_builder, currentOrderItem -> 
+    println("\r\n\r\n\r\n__8__-------- dummy_ship_function debuger START --------__8__")
     def dummy_ship_value = ""
     def dummy_shiping = ""
 
@@ -449,20 +476,23 @@ def dummy_ship_function = { dummy_ship_function_builder, currentOrderItem ->
             dummy_shiping = ""
         }
         dummy_ship_value = dummy_shiping
-
+    println("__8__-------- dummy_ship_function debuger END --------__8__")
     dummy_ship_function_builder."ShoppingItemType"(dummy_ship_value)
 }
 
 
 
 
-def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parameter, prj_SapCodes_array_parameter, currentOrderItem ->
+def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parameter, prj_SapCodes_array_parameter, prj_SapCodes_FL_array_parameter, currentOrderItem ->
+    println("\r\n\r\n\r\n__9__-------- material_code__function debuger START --------__9__")
     def dummy_ship_value = ""
     def dummy_shiping = ""
 
     def kipBendexArrayDET = kipBendexArrayDET_parameter
 	def kipBendexArrayCNF = kipBendexArrayCNF_parameter
 	def prj_SapCodes_array = prj_SapCodes_array_parameter
+    def prj_SapCodes_FL_array = prj_SapCodes_FL_array_parameter
+    //prj_SapCodes_FL_array
     def nodeValue = null
 
     //ServiceResponse.Orders.Order.OrderItems.OrderItem.each { currentOrderItem ->
@@ -474,7 +504,8 @@ def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
 		def countItems_TemplateParameters = currentOrderItem.TemplateParameters.Item.size()
 		def items_TemplateParameters = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' }
 
-
+        println("countItems_CustomProperties ---- " + countItems_CustomProperties)
+        println("countItems_TemplateParameters ---- " + countItems_TemplateParameters)
 		
 		def kipBendexDistributionListValue = ""
 		def sapcode = ""
@@ -485,30 +516,42 @@ def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
 			
 
 		if(countItems_TemplateParameters > 1 | countItems_CustomProperties > 1){
+            
 
 			kipBendexDistributionListValue = currentOrderItem.TemplateParameters.'**'.find { it.name() == 'Item' && it.@name == 'DISTRIBUTION LIST' }?.text()
-			
+            println("1 kipBendexDistributionListValue --- " + kipBendexDistributionListValue)
+
+
 			if(kipBendexDistributionListValue == null){
+                
 				kipBendexDistributionListValue = currentOrderItem.CustomProperties.PropertiesValues.'**'.find { it.name() == 'Item' && it.@name == 'DISTRIBUTION LIST' }?.text()
 			}
 
-
+            println("2 kipBendexDistributionListValue --- " + kipBendexDistributionListValue)
 			if(kipBendexDistributionListValue == "Facades"){
+                
 				nodeValue = 'FacadesTrue'
 			}
 
 
 			if(kipBendexDistributionListValue != "Facades"){
+                
 				sapcode   = currentOrderItem.CustomProperties.PropertiesValues.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
 				nodeValue = currentOrderItem.CustomProperties.PropertiesValues.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
-
+                
 				if(nodeValue == null){
 					sapcode   = currentOrderItem.TemplateParameters.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
 					nodeValue = currentOrderItem.TemplateParameters.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
-				}
+				} else {
+                    if(nodeValue.length() == 0){
+                        sapcode   = currentOrderItem.TemplateParameters.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
+					    nodeValue = currentOrderItem.TemplateParameters.'**'.find { it.name() == 'Item' && it.@name == 'SAPCODE' }?.text()
+                    }
+                }
 			}
 
 		} else {
+            
 			def kipBendexDecisionTppvExist = false;
 			def kipBendexIfItemIsShipping = currentOrderItem.ShoppingItemType
 
@@ -520,10 +563,16 @@ def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
 				def kipBendexName = currentOrderItem.Name
 
 				if(currentOrderItem.Profile.@kind == "profile"){
+                    
 
 					if(currentOrderItem.Profile.@length == 150){
 						kipJbBSChecker = 1
-						def profileFromPayloadValue = currentOrderItem.Profile.@flangeSum		
+						def profileFromPayloadValue = currentOrderItem.Profile.@flangeSum
+
+                        if (profileFromPayloadValue == null | profileFromPayloadValue.size() == 0){
+                            profileFromPayloadValue = 0
+                        }		
+
 						def profileFromPayloadValue_to_number = profileFromPayloadValue.toDouble()
 						def width = Math.round(profileFromPayloadValue_to_number)
 
@@ -540,20 +589,31 @@ def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
 
 				}
 				
+
+                
 				def bendingCount = Integer.parseInt(currentOrderItem.Profile.@bendingCount.text())
 				def hemRiCount = currentOrderItem.Profile.Flanges.Flange?.count { it.@hemRi?.text()?.trim() }
 				bends = bendingCount - hemRiCount
 				
+                println("BENDS --- " + bends)
 
 				if(currentOrderItem.Profile.@kind == "profile" && codes_checker == 0 && bends < 10){
+                    println("TRUE 1 ----")
 					if(currentOrderItem.Profile.@length != 150){
-						
-						def profileFromPayloadValue = currentOrderItem.Profile.@flangeSum		
+                        println("TRUE 2 ----")
+						def profileFromPayloadValue = currentOrderItem.Profile.@flangeSum.text()
+                        println("profileFromPayloadValue flangeSum ---" + profileFromPayloadValue)
+
+                        if(profileFromPayloadValue == null | profileFromPayloadValue.length() == 0){
+                            profileFromPayloadValue = 0
+                        }	
+
 						def profileFromPayloadValue_to_number = profileFromPayloadValue.toDouble()
 						def widthFL = Math.round(profileFromPayloadValue_to_number)
+                        println("widthFL ---- " + widthFL)
 
-						def check_SapCodes_array = prj_SapCodes_array[widthFL.toString()] ?: "NO_VALUE"
-
+						//def check_SapCodes_array = prj_SapCodes_FL_array.get(widthFL.toString()) ?: "NO_VALUE"
+                        def check_SapCodes_array = prj_SapCodes_FL_array[widthFL.toString()] ?: "NO_VALUE"
 						if(check_SapCodes_array != "NO_VALUE"){
 							nodeValue = check_SapCodes_array
 						} else {
@@ -567,7 +627,11 @@ def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
 
 
 				if(currentOrderItem.Profile.@kind == "box" && codes_checker == 0){
-					def profileFromPayloadValue = currentOrderItem.Profile.@width		
+					def profileFromPayloadValue = currentOrderItem.Profile.@width
+                    if(profileFromPayloadValue == null | profileFromPayloadValue..size() == 0){
+                        profileFromPayloadValue = 0
+                    }
+
 					def profileFromPayloadValue_to_number = profileFromPayloadValue.toDouble()
 					def widthFL = Math.round(profileFromPayloadValue_to_number)
 
@@ -593,19 +657,28 @@ def material_code__function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
 		if(nodeValue == null){
 			nodeValue = ""
 		}
-       
-
+        println("Node value is y---y " + nodeValue )
+        
+        println("__9__-------- material_code__function debuger END --------__9__")
+        nodeValue_test_arr_a << nodeValue
+        
 	//}
     return nodeValue
+    
 }
 
-def nodeValue = material_code__function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, dicts_list.prj_SapCodes_array, get_currentOrderItem_function)
 
+println("\r\n\r\n\r\n__xx__-------- nodeValue debuger START --------__xx__")
+def nodeValue = material_code__function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, dicts_list.prj_SapCodes_array, dicts_list.prj_SapCodes_FL_array, get_currentOrderItem_function)
+nodeValue_test_arr_b << nodeValue
+println("nodeValue x---x " + nodeValue)
+println("\r\n\r\n\r\n__xx__-------- nodeValue debuger END --------__xx__")
 
 
 
 
 def order_qty_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parameter, nodeValue_parameter, currentOrderItem ->
+println("\r\n\r\n\r\n__10__-------- order_qty_function debuger START --------__10__")
     def finalvar_value = ""
     def kipBendexArrayDET = kipBendexArrayDET_parameter
     def kipBendexArrayCNF = kipBendexArrayCNF_parameter
@@ -614,6 +687,7 @@ def order_qty_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parame
         def kip_jb_string_of_nodes_checker = ""
         def kip_jb_dictionary_trigger = 0
         def i = 0
+        def order_qty_vale = ""
         def ORDER_QTY = ""
         def nodevalue = nodeValue_parameter
         
@@ -629,8 +703,9 @@ def order_qty_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parame
             def isTemplateParametersPresented = currentOrderItem.TemplateParameters.Item.size()
             def countItems_TemplateParameters = currentOrderItem.TemplateParameters.Item.size()
             def items_TemplateParameters = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' }
-
-        
+            println("isCustomPropertiesPresented is ---- " + isCustomPropertiesPresented)
+            println("isTemplateParametersPresented is ---- " + isTemplateParametersPresented)
+          	
 
             if(isCustomPropertiesPresented != 0){
                 if(countItems_CustomProperties == 1 && items_CustomProperties[0]?.@name?.text() == "mark_ID"){
@@ -658,56 +733,71 @@ def order_qty_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parame
                     }
                 }
 
+                order_qty_vale = currentOrderItem.CustomProperties.PropertiesValues.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0]
+                println("1 order_qty_vale ---- " + order_qty_vale)
+
                 if(kip_jb_string_of_nodes_checker.length() == 0){
                     if(currentOrderItem.ShoppingItemType.text().contains("Shipping")){
                         ORDER_QTY = currentOrderItem.Quantity.text()
                     } else {
-                        ORDER_QTY = currentOrderItem.CustomProperties.PropertiesValues.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0].text()
+                        if(order_qty_vale != null){
+                            ORDER_QTY = currentOrderItem.CustomProperties.PropertiesValues.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0].text()
+                        }
                     }
                 } else {
-                    ORDER_QTY = currentOrderItem.CustomProperties.PropertiesValues.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0].text()
+                    if(order_qty_vale != null){
+                        ORDER_QTY = currentOrderItem.CustomProperties.PropertiesValues.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0].text()
+                    }
                 }
                     
 
             } else {
-                println(countItems_TemplateParameters)
                 
-                while(kip_jb_dictionary_trigger != 1 && i < countItems_TemplateParameters){
-                    if(items_TemplateParameters[i]?.text().length() > 0 && items_TemplateParameters[i] != null){
+                if(countItems_TemplateParameters != 0){
+                    while(kip_jb_dictionary_trigger != 1 && i < countItems_TemplateParameters){
 
-                        if(items_TemplateParameters[i]?.@name?.text().take(3) != "BX_"){
-                            if(items_TemplateParameters[i]?.@name?.text() in kipBendexArrayDET ){
-                                kip_jb_string_of_nodes_checker += "true,"
-                            } else {
-                                kip_jb_string_of_nodes_checker = "1"
-                            }
+                        if(items_TemplateParameters[i]?.text().length() > 0 && items_TemplateParameters[i] != null){
 
-                            if(items_TemplateParameters[i]?.@name?.text() in kipBendexArrayCNF ){
-                                kip_jb_string_of_nodes_checker += "true,"
-                            } else {
-                                kip_jb_string_of_nodes_checker = "1"
+                            if(items_TemplateParameters[i]?.@name?.text().take(3) != "BX_"){
+                                if(items_TemplateParameters[i]?.@name?.text() in kipBendexArrayDET ){
+                                    kip_jb_string_of_nodes_checker += "true,"
+                                } else {
+                                    kip_jb_string_of_nodes_checker = "1"
+                                }
+
+                                if(items_TemplateParameters[i]?.@name?.text() in kipBendexArrayCNF ){
+                                    kip_jb_string_of_nodes_checker += "true,"
+                                } else {
+                                    kip_jb_string_of_nodes_checker = "1"
+                                }
                             }
                         }
+                        i++
                     }
-                    i++
-                } 
+
+                    order_qty_vale = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0]
 
 
-                if(kip_jb_string_of_nodes_checker.length() == 0){
-                    if(currentOrderItem.ShoppingItemType.text().contains("Shipping")){
-                        println("Shipping TRUE ")
-                        ORDER_QTY = currentOrderItem.Quantity.text()
+                    if(kip_jb_string_of_nodes_checker.length() == 0){
+                        if(currentOrderItem.ShoppingItemType.text().contains("Shipping")){
+                            println("Shipping TRUE ")
+                            ORDER_QTY = currentOrderItem.Quantity.text()
+                        } else {
+                            if(order_qty_vale != null){
+                                ORDER_QTY = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0].text()
+                            }
+                        }    
                     } else {
-                        ORDER_QTY = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0].text()
-                    }    
-                } else {
-                    ORDER_QTY = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0].text()
+                        if(order_qty_vale != null){
+                            ORDER_QTY = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' && it.@name == 'ORDER_QTY' }[0].text()
+                        }
+                    }
                 }
                 
-                
+                  
             }
             
-
+            println("1 ORDER_QTY --- " + ORDER_QTY)
     
 
 
@@ -716,32 +806,38 @@ def order_qty_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parame
             if( isCustomPropertiesPresented == 0 | (countItems_CustomProperties == 1 && items_CustomProperties[0]?.@name?.text() == "mark_ID") && isTemplateParametersPresented == 0 && nodevalue != "Shipping"){
                 ORDER_QTY = currentOrderItem.Quantity.text()
             }
+            println("2 ORDER_QTY --- " + ORDER_QTY)
 
+            if(ORDER_QTY.length() == 0){
+                ORDER_QTY = 0
+            }
+
+            if(ORDER_QTY != 0){
+                finalvar = new BigDecimal(ORDER_QTY).setScale(3, BigDecimal.ROUND_HALF_UP)
+            }
             
-            finalvar = new BigDecimal(ORDER_QTY).setScale(3, BigDecimal.ROUND_HALF_UP)
-            
+            println("1 finalvar --- " + finalvar)
         
-            if( isCustomPropertiesPresented == 0 
-                |
-                (countItems_CustomProperties == 1 && items_CustomProperties[0]?.@name?.text() == "mark_ID")
-                && 
-                isTemplateParametersPresented == 0 
-            ){
+            if( isCustomPropertiesPresented == 0 | (countItems_CustomProperties == 1 && items_CustomProperties[0]?.@name?.text() == "mark_ID") && isTemplateParametersPresented == 0){
                 
                 def checker = 0
                 if(currentOrderItem.Profile.@kind == "profile" && currentOrderItem.Profile.@length == 150 && checker == 0){
+                    println(" TRUE ")
                     finalvar = currentOrderItem.Quantity.text()
                     checker = 1
+                } else {
+                    println(" FALSE ")
                 }
                 
                 def length = 0
-                
-                
-                def current_orderItem_profile = currentOrderItem.Profile.text()
-                if(current_orderItem_profile.length() != 0){
-                    length = currentOrderItem.Profile.@length.toDouble()
+                length = currentOrderItem.Profile.@length
+
+                if(length == null | length.size() == 0){
+                    length = 0
                 }
+                length = length.toDouble()
                 
+                println("1 length ---- " + length)
 
                 if(currentOrderItem.Profile.@kind == "profile" && currentOrderItem.Profile.@length != 150 && checker == 0){
                     finalvar = (length/1000).toDouble()
@@ -767,18 +863,21 @@ def order_qty_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parame
                 }
                 
             }
-
+        println("1 finalvar --- " + finalvar)
+        finalvar = finalvar.toBigDecimal().toInteger()
         finalvar_value = finalvar
         
-    //}
+    //} 
     
     return finalvar_value
+    println("_10__-------- order_qty_function debuger END --------__10__")
 }
 
 
 
 
 def plant_function = { currentOrderItem -> 
+    println("\r\n\r\n\r\n__11__-------- plant_function debuger START --------__11__")
     def finish = ""
     def i = 0
     def isPlantPresented = false
@@ -838,7 +937,7 @@ def plant_function = { currentOrderItem ->
                 }
             }
         }
-
+    println("__11__-------- plant_function debuger END --------__11__")
     // }
     return finish
 
@@ -849,7 +948,9 @@ def plant_function = { currentOrderItem ->
 
 
 
-def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_metal_ext_array_parameter, prj_coil_finish_ext_array_parameter, prj_coil_guige_ext_array_parameter, prj_coil_colour_ext_array_parameter, front_colour_colour_parameter, front_colour_type_parameter, front_colour_colour_IE_array_parameter, front_colour_type_IE_parameter, nodeValue_parameter ->
+def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, coverWidth2Dict_parameter, prj_coil_metal_ext_array_parameter, prj_coil_finish_ext_array_parameter, prj_coil_guige_ext_array_parameter, prj_coil_colour_ext_array_parameter, front_colour_colour_parameter, front_colour_type_parameter, front_colour_colour_IE_array_parameter, front_colour_type_IE_parameter, nodeValue_parameter ->
+            println("\r\n\r\n\r\n__12__-------- dummy_matterial_item_function debuger START --------__12__")
+            
             def currentCreateNodeName_array = []
             def currentCreateNodeValue_array = []
             def all_nodes_name_array = []
@@ -869,6 +970,7 @@ def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_meta
             def front_colour_type = front_colour_type_parameter
             def front_colour_colour_IE_array = front_colour_colour_IE_array_parameter
             def front_colour_type_IE = front_colour_type_IE_parameter
+            def coverWidth2Dict = coverWidth2Dict_parameter
 
 
             def kip_jb_positionStringFlag = "THEREISNOPOS888"
@@ -888,6 +990,9 @@ def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_meta
             def itemPos1_TemplateParameters = items_TemplateParameters[0]?.@name?.text()
             def countItems_TemplateParameters = currentOrderItem.TemplateParameters.Item.size()
 
+            println("isCustomPropertiesPresented --- " + isCustomPropertiesPresented)
+            println("isTemplateParametersPresented --- " + isTemplateParametersPresented)
+
             def z_pc_checker = 0
             def IE_checker = 0
 
@@ -899,15 +1004,16 @@ def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_meta
 
 
             
-
-            if(ServiceResponse.Orders.Order.Oid.text() == "45d3d4ec-3f9e-4a12-abfc-ddc4e2b11f9a"){
+            println("CUR --- " + ServiceResponse.Orders.Order.Currency?.@oid?.text())
+            if(ServiceResponse.Orders.Order.Currency?.@oid?.text() == "45d3d4ec-3f9e-4a12-abfc-ddc4e2b11f9a"){
                 currency = "GBP"
             }
 
-            if(ServiceResponse.Orders.Order.Oid.text() == "f6e2a38e-610a-4027-9493-70cf8b74ddc4"){
+            if(ServiceResponse.Orders.Order.Currency?.@oid?.text() == "f6e2a38e-610a-4027-9493-70cf8b74ddc4"){
                 currency = "EUR"
             }
 
+            println(" real CUR --- " + currency)
             if(!currency){
                 currency = "THEREISNOCURRENCY!!@"
             }
@@ -919,6 +1025,8 @@ def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_meta
 
             }	
 
+
+            println("currentCreateNodeName_array --- " + currentCreateNodeName_array)
 
             if (isCustomPropertiesPresented != 0) {
                     if(ServiceResponse.Orders.Order.BALand == "IE" | ServiceResponse.Orders.Order.BALand == "XI"){
@@ -1122,31 +1230,39 @@ def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_meta
 
 
 
-            if((isCustomPropertiesPresented == 0 | countItems_CustomProperties == 1 && itemPos1_CustomProperties == "mark_ID") && isTemplateParametersPresented == 0 && nodeValue == "FREIGHT"){
+            if((isCustomPropertiesPresented == 0 | (countItems_CustomProperties == 1 && itemPos1_CustomProperties == "mark_ID")) && isTemplateParametersPresented == 0 && nodeValue != "FREIGHT"){
+            println("TURE")
             //if(mockTester == 1){	
                 def length_flag = ""
 
-                if(ServiceResponse.Orders.Order.Oid.text() == "45d3d4ec-3f9e-4a12-abfc-ddc4e2b11f9a"){
-                    currency = "GBP"
-                }
+                // if(ServiceResponse.Orders.Order.Currency?.@oid?.text() == "45d3d4ec-3f9e-4a12-abfc-ddc4e2b11f9a"){
+                //     currency = "GBP"
+                // }
 
-                if(ServiceResponse.Orders.Order.Oid.text() == "f6e2a38e-610a-4027-9493-70cf8b74ddc4"){
-                    currency = "EUR"
-                }
+                // if(ServiceResponse.Orders.Order.Currency?.@oid?.text() == "f6e2a38e-610a-4027-9493-70cf8b74ddc4"){
+                //     currency = "EUR"
+                // }
 
-                if(!currency){
-                    currency = "THEREISNOCURRENCY!!@"
-                }
+                // if(!currency){
+                //     currency = "THEREISNOCURRENCY!!@"
+                // }
 
-                if(currency != "THEREISNOCURRENCY!!@"){
-                    //"CURRENCY"(currency)
-                    currentCreateNodeName_array << "CURRENCY"
-                    currentCreateNodeValue_array << currency
-                }
+                // if(currency != "THEREISNOCURRENCY!!@"){
+                //     //"CURRENCY"(currency)
+                //     currentCreateNodeName_array << "CURRENCY"
+                //     currentCreateNodeValue_array << currency
+                // }
 
-                "BENDEX_POS"(currentOrderItem.PositionString.text())
+                // println("currentCreateNodeName_array ---- " + currentCreateNodeName_array)
+                // println("currentCreateNodeValue_array ---- " + currentCreateNodeValue_array)                            
+                //"BENDEX_POS"(currentOrderItem.PositionString.text())
 
                 def lengthFromPayloadValue = currentOrderItem.Profile.@length
+
+                if(lengthFromPayloadValue == null | lengthFromPayloadValue.size() == 0){
+                    lengthFromPayloadValue = 0
+                }
+                
                 def lengthFromPayloadValue_to_number = lengthFromPayloadValue.toDouble()
 
                 
@@ -1188,18 +1304,23 @@ def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_meta
                 if(currentOrderItem.Profile.@kind == "profile" && lengthFromPayloadValue == 150){
                     safe_edge_nodevalue = null
                 }
-
+                println("material_oid --- " + material_oid)
                 
                 def coil_metal_ext_value = prj_coil_metal_ext_array[material_oid.toString()]
                 def coil_finish_ext_value = prj_coil_finish_ext_array[material_oid.toString()]
                 def coil_gauge_ext_value = prj_coil_guige_ext_array[material_oid.toString()]
                 def coil_colour_ext_value = prj_coil_colour_ext_array[material_oid.toString()]
-
+                
+                println("coil_metal_ext_value ----- " + coil_metal_ext_value)
+                println("coil_finish_ext_value ----- " + coil_finish_ext_value)
+                println("coil_gauge_ext_value ----- " + coil_gauge_ext_value)
+                println("coil_colour_ext_value ----- " + coil_colour_ext_value)
+                
                 if(coil_metal_ext_value != null){
                     currentCreateNodeName_array << "COIL_METAL_EXT"
                     currentCreateNodeValue_array << coil_metal_ext_value
                 } 
-                
+               
                 if(coil_finish_ext_value != null){
                     currentCreateNodeName_array << "COIL_FINISH_EXT"
                     currentCreateNodeValue_array << coil_finish_ext_value
@@ -1220,6 +1341,8 @@ def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_meta
                     currentCreateNodeValue_array << length_flag
                 }
         
+                println("currentCreateNodeName_array --- " + currentCreateNodeName_array)
+                println("currentCreateNodeValue_array --- " + currentCreateNodeValue_array)
 
                 //"COIL_METAL_EXT"(prj_coil_metal_ext_array[material_oid.toString()] ?: "NO_VALUE")
                 //"COIL_FINISH_EXT"(prj_coil_finish_ext_array[material_oid.toString()] ?: "NO_VALUE")
@@ -1227,7 +1350,8 @@ def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_meta
                 //"COIL_COLOUR_EXT"(prj_coil_colour_ext_array[material_oid.toString()] ?: "NO_VALUE")
                 //"LENGTH_FLAG"(length_flag)
 
-
+                 //!!!!!!!!!!!!! ISSUEE
+                println("coverWidth2Dict ---- " + coverWidth2Dict)
                 def coverWidth2Dict_value = ""
                 def coverWidth2Dict_checker = coverWidth2Dict[material_oid.toString()]
                 if(coverWidth2Dict_checker != null){
@@ -1235,8 +1359,8 @@ def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_meta
                 }
 
 
-
-                if(coverWidth2Dict_value == "NO_VALUE"){
+                println("coverWidth2Dict_value --- " + coverWidth2Dict_value)
+                if(coverWidth2Dict_value.length() == 0){
                     //"COVER_WIDTH2"(1208)
                     currentCreateNodeName_array << "COVER_WIDTH2"
                     currentCreateNodeValue_array << 1208
@@ -1406,7 +1530,7 @@ def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_meta
                 if(nodeValue != "FLPROF"){
                     //"NO_ITEMS"(currentOrderItem.Quantity)
                     currentCreateNodeName_array << "NO_ITEMS"
-                    currentCreateNodeValue_array << currentOrderItem.Quantity
+                    currentCreateNodeValue_array << currentOrderItem.Quantity.toBigDecimal().intValue()
                 }
             }
 
@@ -1417,14 +1541,17 @@ def dummy_matterial_item_function = { kipBendexArrayCNF_parameter, prj_coil_meta
             
             currentCreateNodeName_array.clear()
             currentCreateNodeValue_array.clear()
+            println("__12__-------- dummy_matterial_item_function debuger END --------__12__")
         }
             
             return[all_nodes_name_array: all_nodes_name_array, all_nodes_value_array: all_nodes_value_array]
             
+            
 }
 
 
-def dummy_matterial_item_function_result = dummy_matterial_item_function(dicts_list.kipBendexArrayCNF, dicts_list.prj_coil_metal_ext_array, dicts_list.prj_coil_finish_ext_array, dicts_list.prj_coil_guige_ext_array, dicts_list.prj_coil_colour_ext_array, dicts_list.front_colour_colour, dicts_list.front_colour_type, dicts_list.front_colour_colour_IE_array, dicts_list.front_colour_type_IE, nodeValue)
+def dummy_matterial_item_function_result = dummy_matterial_item_function(dicts_list.kipBendexArrayCNF, dicts_list.coverWidth2Dict, dicts_list.prj_coil_metal_ext_array, dicts_list.prj_coil_finish_ext_array, dicts_list.prj_coil_guige_ext_array, dicts_list.prj_coil_colour_ext_array, dicts_list.front_colour_colour, dicts_list.front_colour_type, dicts_list.front_colour_colour_IE_array, dicts_list.front_colour_type_IE, nodeValue)
+println("!! dummy_matterial_item_function_result !! ---" + dummy_matterial_item_function_result)
 
 
 def p = 0
@@ -1453,10 +1580,11 @@ def dummy_matterial_item_NODE_MAKER_function = { dummy_matterial_item_NODE_MAKER
 
 
 def dummy_detailing_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parameter, nodeValue_parameter ->
-
+    println("\r\n\r\n\r\n__13__-------- dummy_detailing_function debuger START --------__13__")
 
     def kipJbBSChecker = 1
     nodeValue = nodeValue_parameter
+    println("nodeValue at the start ***///" + nodeValue_parameter)
     kipBendexArrayDET = kipBendexArrayDET_parameter
     kipBendexArrayCNF = kipBendexArrayCNF_parameter
 
@@ -1464,6 +1592,11 @@ def dummy_detailing_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_
 
     def currentCreateNodeName_array = []
     def currentCreateNodeValue_array = []
+    println("******************* --- ")
+        println("currentCreateNodeName_array --- " + currentCreateNodeName_array)
+        println("currentCreateNodeValue_array --- " + currentCreateNodeValue_array)
+    currentCreateNodeName_array.clear()
+    currentCreateNodeValue_array.clear()
     def all_nodes_name_array = []
     def all_nodes_value_array = []
 
@@ -1485,6 +1618,7 @@ def dummy_detailing_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_
         def countItems_TemplateParameters = currentOrderItem.TemplateParameters.Item.size()
         def items_TemplateParameters = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' } 
 
+        println("isCustomPropertiesPresented --- " + isCustomPropertiesPresented)
 
         if(currentOrderItem.Profile.@kind == "box" | currentOrderItem.Profile.@kind == "composition" | kipJbBSChecker == 1){
             girth_checker = 1
@@ -1514,7 +1648,9 @@ def dummy_detailing_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_
                                         if(items[i]?.@name?.text() == "GIRTH"){
 
                                             def getProfileWidth = currentOrderItem.Profile.@width
-                                            if(getProfileWidth.text().length() == 0){
+
+                                            println("getProfileWidth --- " + getProfileWidth)
+                                            if(getProfileWidth.size() == 0){
                                                 getProfileWidth = "empty"
                                             }
 
@@ -1523,6 +1659,9 @@ def dummy_detailing_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_
                                             if(getProfileWidth != "empty"){
                                                 
                                                 getProfileWidth = currentOrderItem.Profile.@width.text()
+                                                if(getProfileWidth == null | getProfileWidth.length() == 0){
+                                                    getProfileWidth = "0"
+                                                }
                                                 def decimal = Double.parseDouble(getProfileWidth)
                                                 decimal = decimal * 0.001
                                                 decimal = BigDecimal.valueOf(decimal).setScale(4, java.math.RoundingMode.HALF_UP)
@@ -1578,12 +1717,16 @@ def dummy_detailing_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_
 
                                     if(items_TemplateParameters[i]?.@name?.text() == "GIRTH"){
                                         def getProfileWidth = currentOrderItem.Profile.@width
+                              
                                         if(getProfileWidth.text().length() == 0){
                                             getProfileWidth = "empty"
                                         }
 
                                         if(getProfileWidth != "empty"){
                                             getProfileWidth = currentOrderItem.Profile.@width.text()
+                                            if(getProfileWidth == null | getProfileWidth.length() == 0){
+                                                getProfileWidth = "0"
+                                            }
                                             def decimal = Double.parseDouble(getProfileWidth)
                                             decimal = decimal * 0.001
                                             decimal = BigDecimal.valueOf(decimal).setScale(4, java.math.RoundingMode.HALF_UP)
@@ -1628,21 +1771,68 @@ def dummy_detailing_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_
             }
         }
 
+        println("-------------------- --- ")
+        println("currentCreateNodeName_array --- " + currentCreateNodeName_array)
+        println("currentCreateNodeValue_array --- " + currentCreateNodeValue_array)
+        println("isCustomPropertiesPresented --- " + isCustomPropertiesPresented)
+        println("countItems_CustomProperties --- " + countItems_CustomProperties)
+        println("itemPos1_CustomProperties --- " + itemPos1_CustomProperties)
+        println("isTemplateParametersPresented --- " + isTemplateParametersPresented)
+        println("nodeValue b--b " + nodeValue)
 
-        if((isCustomPropertiesPresented == 0 | countItems_CustomProperties == 1 && itemPos1_CustomProperties == "mark_ID") && isTemplateParametersPresented == 0){
+        if((isCustomPropertiesPresented == 0 | (countItems_CustomProperties == 1 && itemPos1_CustomProperties == "mark_ID")) && isTemplateParametersPresented == 0 && nodeValue != "FREIGHT"){
+            println ("TRUEERR")
+        } else {
+            println ("FALSERR")
+        }
+        
+
+        if((isCustomPropertiesPresented == 0 | (countItems_CustomProperties == 1 && itemPos1_CustomProperties == "mark_ID")) && isTemplateParametersPresented == 0 && nodeValue != "FREIGHT"){
+            println("TUrE")
             currentCreateNodeName_array.clear()
             currentCreateNodeValue_array.clear()
 
 
             def no_of_items_value = currentOrderItem.Quantity
             def length_value = currentOrderItem.Length.text().toBigDecimal()  / 1000
-            def id_mark = currentOrderItem.Length.Name
+            length_value = length_value.stripTrailingZeros().toPlainString()
+            def id_mark = currentOrderItem.Name.text()
+            def bundle_no = 1
+ 
+            currentCreateNodeName_array << "NO_OF_ITEMS"
+            currentCreateNodeValue_array << no_of_items_value.toBigDecimal().toInteger()
+
+            currentCreateNodeName_array << "LENGTH"
+            //currentCreateNodeName_array << "DEBUG"
+            currentCreateNodeValue_array << length_value
+
+            currentCreateNodeName_array << "ID_MARK"
+            currentCreateNodeValue_array << id_mark
+
+            currentCreateNodeName_array << "BUNDLE_NO"
+            currentCreateNodeValue_array << bundle_no
+
+            println("no_of_items_value --- " + no_of_items_value)
+            println("length_value --- " + length_value)
+            println("id_mark --- " + id_mark)
+            println("currentCreateNodeName_array --- " + currentCreateNodeName_array)
+            println("currentCreateNodeValue_array --- " + currentCreateNodeValue_array)
 
 
-            def thickness_value = currentOrderItem.Profile.@thickness.text().toDouble()
+            def thickness_value = currentOrderItem.Profile.@thickness.text()
+            if(thickness_value == null | thickness_value.length() == 0){
+                thickness_value = 0
+            }
+            thickness_value = thickness_value.toDouble()
+
+
 
             if(currentOrderItem.Profile.@kind.text() == "profile" && thickness_value <= 0.9){
-                valueGirth = currentOrderItem.Profile.@flangeSum.text().toDouble()
+                valueGirth = currentOrderItem.Profile.@flangeSum.text()
+                if(valueGirth == null | valueGirth.length() == 0){
+                    valueGirth = 0
+                }
+                valueGirth = valueGirth.toDouble()
                 
                 if(currentOrderItem.Profile.@length.text().toInteger() == 150){
                     def hemRi_counter = currentOrderItem.Profile.Flanges.Flange?.count { it.@hemRi?.text()?.trim() }
@@ -1692,7 +1882,14 @@ def dummy_detailing_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_
             }
 
             if(currentOrderItem.Profile.@kind.text() == "profile" && thickness_value > 0.9){
-                valueGirth = currentOrderItem.Profile.@width.text().toDouble()
+                valueGirth = currentOrderItem.Profile.@width.text()
+                if(valueGirth == null | valueGirth.length() == 0){
+                    valueGirth = 0
+                }
+
+                valueGirth = valueGirth.toDouble()
+
+
                 if(currentOrderItem.Profile.@length.text().toInteger() == 150){
                     def hemRi_counter = currentOrderItem.Profile.Flanges.Flange?.count { it.@hemRi?.text()?.trim() }
                     
@@ -1737,13 +1934,25 @@ def dummy_detailing_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_
                 }
                 valueGirth = decimal
             }
-            
+
+            currentCreateNodeName_array << "GIRTH"
+            currentCreateNodeValue_array << valueGirth
+
         }   
 
         
-
+        println("currentCreateNodeName_array 1****1 " + currentCreateNodeName_array)
+        println("currentCreateNodeValue_array **** " + currentCreateNodeValue_array)
         all_nodes_name_array << currentCreateNodeName_array.clone()
         all_nodes_value_array << currentCreateNodeValue_array.clone()
+        currentCreateNodeName_array.clear()
+        currentCreateNodeValue_array.clear()
+
+        println("currentCreateNodeName_array 2****2 " + currentCreateNodeName_array)
+        println("currentCreateNodeValue_array **** " + currentCreateNodeValue_array)
+        println("__13__-------- dummy_detailing_function debuger END --------__13__")
+        
+
     }
         
         return[all_nodes_name_array: all_nodes_name_array, all_nodes_value_array: all_nodes_value_array]
@@ -1751,9 +1960,10 @@ def dummy_detailing_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_
 }
 
 
-
-def dummy_detailing_function_result = dummy_detailing_function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, nodeValue)
 println("************* HELPER *************")
+println("nodeValue at the start ---- " + nodeValue)
+def dummy_detailing_function_result = dummy_detailing_function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, nodeValue)
+println("nodeValue at the end ---- " + nodeValue)
 println("dummy_detailing_function_result ---- all_nodes_name_array --- " + dummy_detailing_function_result.all_nodes_name_array)
 println("dummy_detailing_function_result ---- all_nodes_value_array --- " + dummy_detailing_function_result.all_nodes_value_array)
 println("************* HELPER *************")
@@ -1763,41 +1973,64 @@ def z = 0
 def dummy_detailing_NODE_MAKER_function = { dummy_detailing_NODE_MAKER_function_builder, node_name_parameter, node_value_parameter ->
 
     
+
+    
     def matterial_itemCreateNodeName_global_array = node_name_parameter
     def matterial_itemCreateNodeValue_global_array = node_value_parameter
     
     def  current_node_names_array = matterial_itemCreateNodeName_global_array[z]
     def  current_node_values_array = matterial_itemCreateNodeValue_global_array[z]
+    //println("node_name_parameter 123 --- " + node_name_parameter)
+    //println("node_value_parameter 123 --- " + node_value_parameter)
+
+
+    //def  current_node_names_array = node_name_parameter[1]
+    //def  current_node_values_array = node_value_parameter[1]
+
+
     
+    println("current_node_names_array --- " + current_node_names_array)
+    println("current_node_values_array --- " + current_node_values_array)
     z = z +1
 
     i = 0
     
     if(current_node_names_array != null){
-        while(i < current_node_names_array.size()){
-            if(current_node_values_array[i] != null && current_node_values_array[i] != "" && current_node_values_array[i] != "null" ){
-                dummy_detailing_NODE_MAKER_function_builder."${current_node_names_array[i]}"(current_node_values_array[i])
+        println "current_node_names_array TYPE=${current_node_names_array.getClass()} VALUE=${current_node_names_array}"
+        println "current_node_values_array TYPE=${current_node_values_array.getClass()} VALUE=${current_node_values_array}"
+        println("current_node_names_array.size() --- " + current_node_names_array.size())
+            while(i < current_node_names_array.size()){
+                if(current_node_values_array[i] != null && current_node_values_array[i] != "" && current_node_values_array[i] != "null" ){
+                    dummy_detailing_NODE_MAKER_function_builder."${current_node_names_array[i]}"(current_node_values_array[i])
+                }
+            i++
             }
-        i++
-        }
-    }
 
+
+    }
+    //println("z --- " + z)
+    //z = 0
+    //current_node_names_array.clear()
+    //current_node_values_array.clear()
 }
 
 
 
 
 def dummy_position_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_parameter  ->
-
+    println("\r\n\r\n\r\n__14__-------- dummy_position_function debuger START --------__14__")
 
     kipBendexArrayDET = kipBendexArrayDET_parameter
     kipBendexArrayCNF = kipBendexArrayCNF_parameter
+    
     
 
 
 
     def currentCreateNodeName_array = []
     def currentCreateNodeValue_array = []
+    def all_nodes_name_array = []
+    def all_nodes_value_array = []
     def q = []
     def w = []
     def final_node_name = ""
@@ -1820,23 +2053,30 @@ def dummy_position_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
         def countItems_TemplateParameters = currentOrderItem.TemplateParameters.Item.size()
         def items_TemplateParameters = currentOrderItem.TemplateParameters.'**'.findAll { it.name() == 'Item' } 
 
+        println("isCustomPropertiesPresented --- " + isCustomPropertiesPresented)
+        println("countItems_CustomProperties --- " + countItems_CustomProperties)
+
+        println("isTemplateParametersPresented --- " + isCustomPropertiesPresented)
+
 
         if(isCustomPropertiesPresented != 0){
+            println("TRUEe 1 ")
             if(countItems_CustomProperties == 1 && itemPos1_CustomProperties == "mark_ID"){
                 println("ONE ITEM IN CUSTOM")
             } else {
+                
                 while(kip_jb_dictionary_trigger != 1 && i < countItems_CustomProperties){
                     if(items_CustomProperties[i]?.text().length() > 0 && items_CustomProperties[i] != null){
                         if(items_CustomProperties[i]?.@name?.text().take(3) != "BX_"){
                             if(items_CustomProperties[i]?.@name?.text() in kipBendexArrayDET){
-                                currentCreateNodeName_array << items_CustomProperties[i]?.@name?.text()
-                                currentCreateNodeValue_array << items_CustomProperties[i]?.text()
+                                //currentCreateNodeName_array << items_CustomProperties[i]?.@name?.text()
+                                //currentCreateNodeValue_array << items_CustomProperties[i]?.text()
                                 kip_jb_dictionary_trigger = 1
                             }
 
                             if(items_CustomProperties[i]?.@name?.text() in kipBendexArrayCNF){
-                                currentCreateNodeName_array << items_CustomProperties[i]?.@name?.text()
-                                currentCreateNodeValue_array << items_CustomProperties[i]?.text()
+                                //currentCreateNodeName_array << items_CustomProperties[i]?.@name?.text()
+                                //currentCreateNodeValue_array << items_CustomProperties[i]?.text()
                                 kip_jb_dictionary_trigger = 1
                             }
                         }
@@ -1845,14 +2085,15 @@ def dummy_position_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
                     i++
                 }
             }
-
+            println("kip_jb_dictionary_trigger 1 ---- " + kip_jb_dictionary_trigger)
 
     
-            if(currentCreateNodeName_array.size() > 0){
+            //if(currentCreateNodeName_array.size() > 0){
+            if(kip_jb_dictionary_trigger > 0){
                 while(i < countItems_CustomProperties){
                     if(items_CustomProperties[i]?.@name?.text() == "BENDEX_POSITION"){
-                        currentCreateNodeName_array << "BENDEX_POSITION"
-                        currentCreateNodeValue_array << currentOrderItem.PositionString.text()
+                        //currentCreateNodeName_array << "BENDEX_POSITION"
+                        //currentCreateNodeValue_array << currentOrderItem.PositionString.text()
                         final_node_name = "BENDEX_POSITION"
                         final_node_value = currentOrderItem.PositionString.text()
                     } 
@@ -1865,26 +2106,30 @@ def dummy_position_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
                 if(items_TemplateParameters[i]?.text().length() > 0 && items_TemplateParameters[i] != null){
                     if(items_TemplateParameters[i]?.@name?.text().take(3) != "BX_"){
                         if(items_TemplateParameters[i]?.@name?.text() in kipBendexArrayDET){
-                            currentCreateNodeName_array << items_TemplateParameters[i]?.@name?.text()
-                            currentCreateNodeValue_array << items_TemplateParameters[i]?.text()
+                            //currentCreateNodeName_array << items_TemplateParameters[i]?.@name?.text()
+                            //currentCreateNodeValue_array << items_TemplateParameters[i]?.text()
                             kip_jb_dictionary_trigger = 1
                         }
 
                         if(items_TemplateParameters[i]?.@name?.text() in kipBendexArrayCNF){
-                            currentCreateNodeName_array << items_TemplateParameters[i]?.@name?.text()
-                            currentCreateNodeValue_array << items_TemplateParameters[i]?.text()
+
+                            //currentCreateNodeName_array << items_TemplateParameters[i]?.@name?.text()
+                            //currentCreateNodeValue_array << items_TemplateParameters[i]?.text()
                             kip_jb_dictionary_trigger = 1
                         }
                     }
                 }
                 i++
             }
+            println("currentCreateNodeName_array --- " + currentCreateNodeName_array)
 
-            if(currentCreateNodeName_array.size() > 0){
+            //if(currentCreateNodeName_array.size() > 0){
+            if(kip_jb_dictionary_trigger > 0){
+                println("TRUE")
                 while(i < countItems_TemplateParameters){
                     if(items_TemplateParameters[i]?.@name?.text() == "BENDEX_POSITION"){
-                        currentCreateNodeName_array << "BENDEX_POSITION"
-                        currentCreateNodeValue_array << currentOrderItem.PositionString.text()
+                        //currentCreateNodeName_array << "BENDEX_POSITION"
+                        //currentCreateNodeValue_array << currentOrderItem.PositionString.text()
                         final_node_name = "BENDEX_POSITION"
                         final_node_value = currentOrderItem.PositionString.text()
                     } 
@@ -1893,24 +2138,36 @@ def dummy_position_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
             } 
         }
 
-
+        println("kip_jb_dictionary_trigger ---" + kip_jb_dictionary_trigger)
         def checkerShip = 0
-        if(currentCreateNodeName_array.size() > 0){
+        if(kip_jb_dictionary_trigger == 0){
             if(currentOrderItem.ShoppingItemType == "Shipping"){
-                currentCreateNodeName_array << ""
-                currentCreateNodeValue_array << ""
+                //currentCreateNodeName_array << ""
+                //currentCreateNodeValue_array << ""
                 checkerShip = 1
             }
 
             if(currentOrderItem.Profile.@kind.text() == "profile" | currentOrderItem.Profile.@kind.text() == "box" | currentOrderItem.Name.text() == "Adapter Profile"){
                 if(checkerShip == 0){
-                    currentCreateNodeName_array << "BENDEX_POSITION"
-                    currentCreateNodeValue_array << currentOrderItem.PositionString.text()
+                    //currentCreateNodeName_array << "BENDEX_POSITION"
+                    //currentCreateNodeValue_array << currentOrderItem.PositionString.text()
                     final_node_name = "BENDEX_POSITION"
                     final_node_value = currentOrderItem.PositionString.text()
                 }
             }
         }
+        println("final_node_name --- " + final_node_name)
+        println("final_node_value --- " + final_node_value)
+        
+    println("__14__-------- dummy_position_function debuger END --------__14__")
+        currentCreateNodeName_array << final_node_name
+        currentCreateNodeValue_array << final_node_value
+        final_node_name = ""
+        final_node_value = ""
+        //all_nodes_name_array << currentCreateNodeName_array.clone()
+        //all_nodes_value_array << currentCreateNodeValue_array.clone()
+        //currentCreateNodeName_array.clear()
+        //currentCreateNodeValue_array.clear()
 
 
     }
@@ -1920,36 +2177,51 @@ def dummy_position_function = { kipBendexArrayDET_parameter, kipBendexArrayCNF_p
         currentCreateNodeName_array: currentCreateNodeName_array,
         currentCreateNodeValue_array: currentCreateNodeValue_array
     ]
+    //return[all_nodes_name_array: all_nodes_name_array, all_nodes_value_array: all_nodes_value_array]
 }
 
 
 
 def dummy_position_function_result = dummy_position_function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF )
-
+println("xxxxxxxxxxxxxxx HELPER xxxxxxxxxxxxxxx")
+println("dummy_position_function_result ---- currentCreateNodeName_array --- " + dummy_position_function_result.currentCreateNodeName_array)
+println("dummy_position_function_result ---- currentCreateNodeValue_array --- " + dummy_position_function_result.currentCreateNodeValue_array)
+println("xxxxxxxxxxxxxxx HELPER xxxxxxxxxxxxxxx")
 
 
 def y = 0
-//dummy_position_NODE_MAKER_function(delegate, dummy_position_function_result.currentCreateNodeName_array, dummy_position_function_result.currentCreateNodeValue_array)
+
 def dummy_position_NODE_MAKER_function = { dummy_position_NODE_MAKER_function_builder, node_name_parameter, node_value_parameter ->
+    println("\r\n\r\n\r\n__15__-------- dummy_position_NODE_MAKER_function debuger START --------__15__")
+    println("node_name_parameter --- " + node_name_parameter)
+    println("node_value_parameter --- " + node_value_parameter)
     def node_maker_names = node_name_parameter
     def node_maker_values = node_value_parameter
 
+
     def current_node_maker_name = node_maker_names[y]
     def current_node_maker_value = node_maker_values[y]
+
 
     y = y + 1
 
 
         if(current_node_maker_name != null & current_node_maker_name != "null" & current_node_maker_value != null & current_node_maker_value != "null"){
-            dummy_position_NODE_MAKER_function_builder."${current_node_maker_name}"(current_node_maker_value)
+            if(current_node_maker_name.size() != 0 & current_node_maker_value.size() != 0){
+                dummy_position_NODE_MAKER_function_builder."${current_node_maker_name}"(current_node_maker_value)
+            }
+   
     }
+
+
+
+    println("__15__-------- dummy_position_NODE_MAKER_function debuger END --------__15__")
 }
 
 
-
-   
-	builder.ORDER_CREATE {
+	 builder.ORDER_CREATE {
 		"Oid"(ServiceResponse.Orders.Order.Oid)
+        
         HEADER{
 			CUSTOMER{
 				"PO_NUM"(ServiceResponse.Orders.Order.Description)//tested
@@ -1983,33 +2255,48 @@ def dummy_position_NODE_MAKER_function = { dummy_position_NODE_MAKER_function_bu
 				"KS_HEADER_TEXT_1"(ServiceResponse.Orders.Order.Comments)//tested
                 "BUSINESS_UNIT"(ServiceResponse.Orders.Order.BACompany2)
 			}
-        
+         
 		}
         ServiceResponse.Orders.Order.OrderItems.OrderItem.each { currentOrderItem ->
             MATERIAL_ITEM{
-                // "DUMMY_SHIP"("NODE VALUE")
+                ///// "DUMMY_SHIP"("NODE VALUE")
                 dummy_ship_function(delegate, currentOrderItem)
-                "MATERIAL_CODE"(material_code__function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, dicts_list.prj_SapCodes_array, currentOrderItem))  	
+                def material_code__function_result = material_code__function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, dicts_list.prj_SapCodes_array, dicts_list.prj_SapCodes_FL_array, currentOrderItem)
+                if(material_code__function_result.length() != 0){
+                    "MATERIAL_CODE"(material_code__function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, dicts_list.prj_SapCodes_array, dicts_list.prj_SapCodes_FL_array, currentOrderItem))
+                }
+                //"MATERIAL_CODE"(material_code__function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, dicts_list.prj_SapCodes_array, currentOrderItem))
                 "ORDER_QTY"(order_qty_function(dicts_list.kipBendexArrayDET, dicts_list.kipBendexArrayCNF, nodeValue, currentOrderItem))
                 "PLANT"(plant_function(currentOrderItem))
                 "CONDITION"()
                 "PRICE"(currentOrderItem.Price)
                 "DISCOUNT"(currentOrderItem.Discount)
-                //"DUMMY_MATERIAL_ITEM"(NODE VALUE)
+                ////"DUMMY_MATERIAL_ITEM"(NODE VALUE)
                 dummy_matterial_item_NODE_MAKER_function(delegate, dummy_matterial_item_function_result.all_nodes_name_array, dummy_matterial_item_function_result.all_nodes_value_array)
                 DETAILING{
-                    //"DUMMY_DETAILING"("NODE VALUE")
+                    // //"DUMMY_DETAILING"("NODE VALUE")
+
                     dummy_detailing_NODE_MAKER_function(delegate, dummy_detailing_function_result.all_nodes_name_array, dummy_detailing_function_result.all_nodes_value_array)
-                    //"DUMMY_POSITION"("NODE VALUE")
+                    ////"DUMMY_POSITION"("NODE VALUE")
                     dummy_position_NODE_MAKER_function(delegate, dummy_position_function_result.currentCreateNodeName_array, dummy_position_function_result.currentCreateNodeValue_array)
                     
                 }
             }
         }
+        
 	}
+	  
+    println("def nodeValue_test_arr_a >>>>> " + nodeValue_test_arr_a)
+    println("def nodeValue_test_arr_b >>>>> " + nodeValue_test_arr_b)
+	
+	 
 
-    def resultXml = writer.toString()
-    def orderCustomerOid = ServiceResponse.Orders.Order.Customer.@oid.text()
+	def resultXml = writer.toString()
+    println(resultXml)
+
+
+	def orderCustomerOid = ServiceResponse.Orders.Order.Customer.@oid.text()
+    //println("orderCustomerOid is ---" + orderCustomerOid)
     def orderCustomerOid_flag = 0
     if(orderCustomerOid == "922e2c80-33aa-4c1d-b87a-9bc74649ee55" | orderCustomerOid == "2f5158e6-d64a-4de5-aeca-e4df45a7c50c"){
         //orderCustomerOid_flag true
@@ -2018,7 +2305,9 @@ def dummy_position_NODE_MAKER_function = { dummy_position_NODE_MAKER_function_bu
         //orderCustomerOid_flag false
         orderCustomerOid_flag = 0
     }
-    //println(resultXml)
+
+    
+    //println("orderCustomerOid_flag is ---" + orderCustomerOid_flag)
 
     
 

@@ -1,145 +1,154 @@
+import com.boomi.execution.ExecutionUtil
+import java.util.Properties
 import groovy.xml.*
 import groovy.json.JsonSlurper
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 
-def xmlFile = new File('payload3.xml')
-def inputXml = xmlFile.getText('UTF-8')
-def ServiceResponse = new XmlSlurper().parseText(inputXml)
-
-def writer = new StringWriter()
-def builder = new MarkupBuilder(writer)
-
-def get_currentOrderItem_function = ServiceResponse.Orders.Order.OrderItems.OrderItem.each { currentOrderItem -> }
-
-def prescrit_function = { ->
-    def kip_bendex_did = ServiceResponse.Orders.Order.Did
-    def kip_bendex_customer_number = ServiceResponse.Orders.Order.BACompany3
-    def kip_bendex_business_unit = ServiceResponse.Orders.Order.BACompany2
-    def kip_bendex_description = ServiceResponse.Orders.Order.Description.text()
-    
-	kip_bendex_description = kip_bendex_description.replace('/', '')
-	kip_bendex_description = kip_bendex_description.replace('\\', '')
-	kip_bendex_description = kip_bendex_description.replace('~', '')
-	kip_bendex_description = kip_bendex_description.replace('%', '')
-	kip_bendex_description = kip_bendex_description.replace('*', '')
-	kip_bendex_description = kip_bendex_description.replace(':', '')
-	kip_bendex_description = kip_bendex_description.replace('\r\n', '')
-    kip_bendex_description = kip_bendex_description.replace('\r', '')
-    kip_bendex_description = kip_bendex_description.replace('\n', '')
-    
-    def kip_bendex_baCompany = ServiceResponse.Orders.Order.BACompany
-    def kip_bendex_createdBy = ServiceResponse.Orders.Order.CreatedBy
-
-
-    def incoming_date = ServiceResponse.Orders.Order.CreatedOn.text()
+for (int x = 0; x < dataContext.getDataCount(); x++) {
+    InputStream is = dataContext.getStream(x)
+	Properties props = dataContext.getProperties(x)
 	
-
-	def cleaned = incoming_date.replace("T", " ").replace("Z", "")
 	
-
-	def inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-	def outputFormat = new SimpleDateFormat("yyyy-MM-dd")
+	def xmlFile = dataContext.getStream(x)
+	def inputXml = xmlFile.getText("UTF-8")
+	def ServiceResponse = new XmlSlurper().parseText(inputXml)
 	
-	def parsedDate = inputFormat.parse(cleaned)
-	def kip_bendex_creation_date = outputFormat.format(parsedDate)
-    
+	def writer = new StringWriter()
+	def builder = new MarkupBuilder(writer)
+
+    def get_currentOrderItem_function = ServiceResponse.Orders.Order.OrderItems.OrderItem.each { currentOrderItem -> }
+
+
+	def prescrit_function = { ->
+		def kip_bendex_did = ServiceResponse.Orders.Order.Did
+		def kip_bendex_customer_number = ServiceResponse.Orders.Order.BACompany3
+		def kip_bendex_business_unit = ServiceResponse.Orders.Order.BACompany2
+		def kip_bendex_description = ServiceResponse.Orders.Order.Description.text()
+		
+		kip_bendex_description = kip_bendex_description.replace('/', '')
+		kip_bendex_description = kip_bendex_description.replace('\\', '')
+		kip_bendex_description = kip_bendex_description.replace('~', '')
+		kip_bendex_description = kip_bendex_description.replace('%', '')
+		kip_bendex_description = kip_bendex_description.replace('*', '')
+		kip_bendex_description = kip_bendex_description.replace(':', '')
+		kip_bendex_description = kip_bendex_description.replace('\r\n', '')
+		kip_bendex_description = kip_bendex_description.replace('\r', '')
+		kip_bendex_description = kip_bendex_description.replace('\n', '')
+		
+		def kip_bendex_baCompany = ServiceResponse.Orders.Order.BACompany
+		def kip_bendex_createdBy = ServiceResponse.Orders.Order.CreatedBy
+
+
+		def incoming_date = ServiceResponse.Orders.Order.CreatedOn.text()
+		
+
+		def cleaned = incoming_date.replace("T", " ").replace("Z", "")
+		
+
+		def inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+		def outputFormat = new SimpleDateFormat("yyyy-MM-dd")
+		
+		def parsedDate = inputFormat.parse(cleaned)
+		def kip_bendex_creation_date = outputFormat.format(parsedDate)
+		
 
 
 
 
-    def kip_bendex_response_result = ServiceResponse.Result
-    def kip_bendex_response_details = ServiceResponse.Details
-    def kip_bendex_version = ServiceResponse.Version
-    def kip_jb_positionStringFlag = 'THEREISNOPOS888'
-    def kip_bendex_fast_track = 'N'
+		def kip_bendex_response_result = ServiceResponse.Result
+		def kip_bendex_response_details = ServiceResponse.Details
+		def kip_bendex_version = ServiceResponse.Version
+		def kip_jb_positionStringFlag = 'THEREISNOPOS888'
+		def kip_bendex_fast_track = 'N'
 
 
-    return[
-        kip_bendex_did: kip_bendex_did,
-        kip_bendex_customer_number: kip_bendex_customer_number,
-        kip_bendex_business_unit: kip_bendex_business_unit,
-        kip_bendex_description: kip_bendex_description,
-        kip_bendex_baCompany: kip_bendex_baCompany,
-        kip_bendex_createdBy: kip_bendex_createdBy,
-        kip_bendex_creation_date: kip_bendex_creation_date,
-        kip_bendex_response_result: kip_bendex_response_result,
-        kip_bendex_response_details: kip_bendex_response_details,
-        kip_bendex_version: kip_bendex_version,
-        kip_jb_positionStringFlag: kip_jb_positionStringFlag,
-        kip_bendex_fast_track: kip_bendex_fast_track
-    ]
+		return[
+			kip_bendex_did: kip_bendex_did,
+			kip_bendex_customer_number: kip_bendex_customer_number,
+			kip_bendex_business_unit: kip_bendex_business_unit,
+			kip_bendex_description: kip_bendex_description,
+			kip_bendex_baCompany: kip_bendex_baCompany,
+			kip_bendex_createdBy: kip_bendex_createdBy,
+			kip_bendex_creation_date: kip_bendex_creation_date,
+			kip_bendex_response_result: kip_bendex_response_result,
+			kip_bendex_response_details: kip_bendex_response_details,
+			kip_bendex_version: kip_bendex_version,
+			kip_jb_positionStringFlag: kip_jb_positionStringFlag,
+			kip_bendex_fast_track: kip_bendex_fast_track
+		]
 
-}
+	}
 
-
-
-
-def prescript = prescrit_function()
+	def prescript = prescrit_function()
 
 
 
 
-def dicts_maker_function = { ->
-
-    def prj_SapCodes_array_JSON_File = new File('prj_SapCodes_array.json').text
-	def prj_SapCodes_array = new JsonSlurper().parseText(prj_SapCodes_array_JSON_File)
-
-	def prj_coil_metal_ext_array_JSON_File = new File('prj_coil_metal_ext_array.json').text
-	def prj_coil_metal_ext_array = new JsonSlurper().parseText(prj_coil_metal_ext_array_JSON_File)
-
-	def prj_coil_finish_ext_array_JSON_File = new File('prj_coil_finish_ext_array.json').text
-	def prj_coil_finish_ext_array = new JsonSlurper().parseText(prj_coil_finish_ext_array_JSON_File)
-
-	def prj_coil_guige_ext_array_JSON_File = new File('prj_coil_guige_ext_array.json').text
-	def prj_coil_guige_ext_array = new JsonSlurper().parseText(prj_coil_guige_ext_array_JSON_File)
-	
-	def prj_coil_colour_ext_array_JSON_File = new File('prj_coil_colour_ext_array.json').text
-	def prj_coil_colour_ext_array = new JsonSlurper().parseText(prj_coil_colour_ext_array_JSON_File)
-
-	def coverWidth2Dict_JSON_File = new File('coverWidth2Dict.json').text
-	def coverWidth2Dict = new JsonSlurper().parseText(coverWidth2Dict_JSON_File)
-
-	def front_colour_colour_JSON_File = new File('front_colour.colour.json').text
-	def front_colour_colour = new JsonSlurper().parseText(front_colour_colour_JSON_File)
-
-	def front_colour_type_JSON_File = new File('front_colour.type.json').text
-	def front_colour_type = new JsonSlurper().parseText(front_colour_type_JSON_File)
-
-	def front_colour_colour_IE_array_JSON_File = new File('front_colour.colour_IE.json').text
-	def front_colour_colour_IE_array = new JsonSlurper().parseText(front_colour_colour_IE_array_JSON_File)
-
-	def front_colour_type_IE_array_JSON_File = new File('front_colour.type_IE.json').text
-	def front_colour_type_IE = new JsonSlurper().parseText(front_colour_type_IE_array_JSON_File)
-
-	def kipBendexPrjArrayDET = new File('kipBendexPrjArrayDET.txt').text
-	def kipBendexArrayDET = kipBendexPrjArrayDET.split(',').collect { it.trim() }
-
-	def kipBendexPrjArrayCNF = new File('kipBendexPrjArrayCNF.txt').text
-	def kipBendexArrayCNF = kipBendexPrjArrayCNF.split(',').collect { it.trim() }
+    def dicts_maker_function = { ->
 
 
+        def prj_SapCodes_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_SapCodes_array")
+        def prj_SapCodes_array = new JsonSlurper().parseText(prj_SapCodes_array_JSON_File)
 
-    return [
-    prj_SapCodes_array:prj_SapCodes_array, 
-    prj_coil_metal_ext_array:prj_coil_metal_ext_array,
-    prj_coil_finish_ext_array:prj_coil_finish_ext_array,
-    prj_coil_guige_ext_array:prj_coil_guige_ext_array,
-    prj_coil_colour_ext_array:prj_coil_colour_ext_array,
-    coverWidth2Dict:coverWidth2Dict,
-    front_colour_colour:front_colour_colour,
-    front_colour_type:front_colour_type,
-    front_colour_colour_IE_array:front_colour_colour_IE_array,
-    front_colour_type_IE:front_colour_type_IE,
-    kipBendexArrayDET:kipBendexArrayDET,
-    kipBendexArrayCNF:kipBendexArrayCNF
-    ]
+		def prj_SapCodes_FL_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_SapCodes_FL_array")
+        def prj_SapCodes_FL_array = new JsonSlurper().parseText(prj_SapCodes_FL_array_JSON_File)
 
- 
-}
+        def prj_coil_metal_ext_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_coil_metal_ext_array")
+        def prj_coil_metal_ext_array = new JsonSlurper().parseText(prj_coil_metal_ext_array_JSON_File)
 
-def dicts_list = dicts_maker_function()
+        def prj_coil_finish_ext_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_coil_finish_ext_array")
+        def prj_coil_finish_ext_array = new JsonSlurper().parseText(prj_coil_finish_ext_array_JSON_File)
+
+        def prj_coil_guige_ext_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_coil_guige_ext_array")
+        def prj_coil_guige_ext_array = new JsonSlurper().parseText(prj_coil_guige_ext_array_JSON_File)
+        
+        def prj_coil_colour_ext_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_prj_coil_colour_ext_array")
+        def prj_coil_colour_ext_array = new JsonSlurper().parseText(prj_coil_colour_ext_array_JSON_File)
+
+        def coverWidth2Dict_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_coverWidth2Dict")
+        def coverWidth2Dict = new JsonSlurper().parseText(coverWidth2Dict_JSON_File)
+
+        def front_colour_colour_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_front_colour_colour_array")
+        def front_colour_colour = new JsonSlurper().parseText(front_colour_colour_JSON_File)
+
+        def front_colour_type_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_front_colour_type")
+        def front_colour_type = new JsonSlurper().parseText(front_colour_type_JSON_File)
+
+        def front_colour_colour_IE_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_front_colour_colour_IE")
+        def front_colour_colour_IE_array = new JsonSlurper().parseText(front_colour_colour_IE_array_JSON_File)
+
+        def front_colour_type_IE_array_JSON_File = ExecutionUtil.getDynamicProcessProperty("dpp_front_colour_type_IE")
+        def front_colour_type_IE = new JsonSlurper().parseText(front_colour_type_IE_array_JSON_File)
+
+        def kipBendexPrjArrayDET = ExecutionUtil.getDynamicProcessProperty("dpp_kipBendexPrjArrayDET")
+        def kipBendexArrayDET = kipBendexPrjArrayDET.split(',').collect { it.trim() }
+
+        def kipBendexPrjArrayCNF = ExecutionUtil.getDynamicProcessProperty("dpp_kipBendexPrjArrayCNF")
+        def kipBendexArrayCNF = kipBendexPrjArrayCNF.split(',').collect { it.trim() }
+
+
+
+        return [
+        prj_SapCodes_array:prj_SapCodes_array, 
+        prj_coil_metal_ext_array:prj_coil_metal_ext_array,
+        prj_coil_finish_ext_array:prj_coil_finish_ext_array,
+        prj_coil_guige_ext_array:prj_coil_guige_ext_array,
+        prj_coil_colour_ext_array:prj_coil_colour_ext_array,
+        coverWidth2Dict:coverWidth2Dict,
+        front_colour_colour:front_colour_colour,
+        front_colour_type:front_colour_type,
+        front_colour_colour_IE_array:front_colour_colour_IE_array,
+        front_colour_type_IE:front_colour_type_IE,
+        kipBendexArrayDET:kipBendexArrayDET,
+        kipBendexArrayCNF:kipBendexArrayCNF,
+		prj_SapCodes_FL_array: prj_SapCodes_FL_array
+        ]
+    }
+
+	def dicts_list = dicts_maker_function()
+
 
 
 
@@ -1929,7 +1938,7 @@ def dummy_position_function_result = dummy_position_function(dicts_list.kipBende
 
 
 def y = 0
-//dummy_position_NODE_MAKER_function(delegate, dummy_position_function_result.currentCreateNodeName_array, dummy_position_function_result.currentCreateNodeValue_array)
+
 def dummy_position_NODE_MAKER_function = { dummy_position_NODE_MAKER_function_builder, node_name_parameter, node_value_parameter ->
     def node_maker_names = node_name_parameter
     def node_maker_values = node_value_parameter
@@ -1942,13 +1951,19 @@ def dummy_position_NODE_MAKER_function = { dummy_position_NODE_MAKER_function_bu
 
         if(current_node_maker_name != null & current_node_maker_name != "null" & current_node_maker_value != null & current_node_maker_value != "null"){
             dummy_position_NODE_MAKER_function_builder."${current_node_maker_name}"(current_node_maker_value)
+ 
+   
     }
+
+
+
+    
 }
 
 
 
    
-	builder.ORDER_CREATE {
+	 builder.ORDER_CREATE {
 		"Oid"(ServiceResponse.Orders.Order.Oid)
         HEADER{
 			CUSTOMER{
@@ -2007,9 +2022,12 @@ def dummy_position_NODE_MAKER_function = { dummy_position_NODE_MAKER_function_bu
             }
         }
 	}
-
-    def resultXml = writer.toString()
-    def orderCustomerOid = ServiceResponse.Orders.Order.Customer.@oid.text()
+	
+	
+	
+	def resultXml = writer.toString()
+	
+	def orderCustomerOid = ServiceResponse.Orders.Order.Customer.@oid.text()
     def orderCustomerOid_flag = 0
     if(orderCustomerOid == "922e2c80-33aa-4c1d-b87a-9bc74649ee55" | orderCustomerOid == "2f5158e6-d64a-4de5-aeca-e4df45a7c50c"){
         //orderCustomerOid_flag true
@@ -2018,8 +2036,8 @@ def dummy_position_NODE_MAKER_function = { dummy_position_NODE_MAKER_function_bu
         //orderCustomerOid_flag false
         orderCustomerOid_flag = 0
     }
-    //println(resultXml)
-
-    
-
-    
+	props.setProperty("document.dynamic.userdefined.orderCustomerOid_flag", orderCustomerOid_flag?.toString())
+	
+	dataContext.storeStream(new ByteArrayInputStream(resultXml.getBytes("UTF-8")), props)
+	
+}

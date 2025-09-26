@@ -71,6 +71,8 @@ If((IsNull(ServiceResponse$Order$OrderItems$OrderItem.CustomProperties$Propertie
 		finalvar = Int(ServiceResponse$Order$OrderItems$OrderItem.Quantity$);
 		checker = 1;
 	);
+
+	
 	length = Double(ServiceResponse$Order$OrderItems$OrderItem.Profile$length);
 	If(ServiceResponse$Order$OrderItems$OrderItem.Profile$kind == 'profile' & ServiceResponse$Order$OrderItems$OrderItem.Profile$length != 150 & checker == 0,
 		finalvar = Double(length/1000);
